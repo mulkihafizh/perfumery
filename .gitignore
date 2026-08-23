@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Nuxt / Nitro output
+.nuxt/
+.output/
+dist/
+
+# Large raw data files (GitHub 100MB limit)
+raw-export.json
+*.log
+
+# Environment & local files
+.env
+.env.*
+!.env.example
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
