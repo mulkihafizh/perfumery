@@ -293,7 +293,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men',
     notes: ['fresh', 'aquatic', 'spicy', 'woody'],
     description: 'Popular Indonesian blue fragrance with crisp marine citrus projection.',
-    aliases: ['bsp blue point', 'blue point', 'bsp'],
+    aliases: ['bsp blue point', 'blue point'],
   },
   {
     name: 'SNOI Perfumery',
@@ -304,7 +304,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['fruity', 'fresh', 'woody'],
     description: 'Indonesian house inspired by versatile fruity pineapple and birch DNA.',
-    aliases: ['snoi'],
+    aliases: ['snoi perfumery', 'snoi perfume'],
   },
   {
     name: 'Bonjour Quantum',
@@ -315,7 +315,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men / Unisex',
     notes: ['fresh', 'aquatic', 'woody'],
     description: 'Crisp aquatic daily signature for warm tropical climates.',
-    aliases: ['bonjour quantum', 'bonjour'],
+    aliases: ['bonjour quantum'],
   },
   {
     name: 'FWB Fragrance',
@@ -326,7 +326,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['sweet', 'fruity', 'oriental'],
     description: 'Crowd-pleasing sweet daytime fragrance tailored for office and dating.',
-    aliases: ['fwb'],
+    aliases: ['fwb fragrance', 'fwb parfum'],
   },
   {
     name: 'Kahf Revered Oud',
@@ -337,7 +337,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men',
     notes: ['woody', 'oriental', 'spicy'],
     description: 'Accessible oriental oud softened with amber and spices.',
-    aliases: ['kahf revered oud', 'revered oud', 'kahf'],
+    aliases: ['kahf revered oud', 'revered oud'],
   },
   {
     name: 'Onix Senopati',
@@ -348,7 +348,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['floral', 'sweet', 'powdery', 'woody'],
     description: 'Trendy Jakarta lifestyle scent with sweet florals and modern woods.',
-    aliases: ['onix senopati', 'senopati', 'onix'],
+    aliases: ['onix senopati', 'senopati'],
   },
   {
     name: 'Layr Second Skin',
@@ -359,7 +359,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['powdery', 'floral', 'fresh'],
     description: 'Ultra-comforting intimate skin scent with soft musk and white blossoms.',
-    aliases: ['layr second skin', 'layr'],
+    aliases: ['layr second skin', 'second skin layr'],
   },
 
   // ── Alchemist Fragrance ──
@@ -440,7 +440,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Women / Unisex',
     notes: ['floral', 'fresh', 'powdery'],
     description: 'Photorealistic Indonesian white floral bouquet with lush jasmine, tuberose, and green dewy leaves.',
-    aliases: ['scent of pluto white floral bouquet', 'pluto white floral bouquet', 'white floral bouquet', 'scent of pluto', 'pluto'],
+    aliases: ['scent of pluto white floral bouquet', 'pluto white floral bouquet', 'white floral bouquet'],
   },
   {
     name: 'Scent of Pluto Lost in the Italian Sea',
@@ -475,7 +475,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['aromatic', 'floral', 'fresh'],
     description: 'All-rounder compliment getter: authentic calming white tea with delicate jasmine blossom.',
-    aliases: ['fonce serenitea', 'foncé serenitea', 'serenitea', 'fonce', 'foncé'],
+    aliases: ['fonce serenitea', 'foncé serenitea', 'serenitea'],
   },
   {
     name: 'Foncé Bouquet Profusion',
@@ -499,7 +499,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['aromatic', 'floral', 'fresh'],
     description: 'Balinese green paddy fields, herbal tea, and fragrant frangipani / white flowers.',
-    aliases: ['project 1945 fields of ubud', 'fields of ubud', 'project 1945'],
+    aliases: ['project 1945 fields of ubud', 'fields of ubud'],
   },
   {
     name: 'Project 1945 Putri Kencana',
@@ -547,7 +547,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['floral', 'spicy', 'oriental'],
     description: 'Artisanal avant-garde creation featuring exotic florals, spices, and warm resins.',
-    aliases: ['alien objects', 'alien object', 'tara basro'],
+    aliases: ['alien objects tara basro', 'alien objects x tara basro', 'tara basro alien objects'],
   },
 
   // ── Crusita ──
@@ -560,7 +560,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['floral', 'woody', 'aromatic'],
     description: 'Introspective herbal tea, delicate rose, and smoky cedar.',
-    aliases: ['crusita the poet', 'crusita'],
+    aliases: ['crusita the poet'],
   },
 
   // ──────────────────────────────────────────────────────────────────
@@ -762,7 +762,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['sweet', 'powdery', 'oriental'],
     description: 'Affordable cult-favorite creamy hot cocoa, milk chocolate, and soft vanilla.',
-    aliases: ['al rehab choco musk', 'choco musk', 'al rehab soft', 'al rehab'],
+    aliases: ['al rehab choco musk', 'choco musk'],
   },
 
   // ── Rue Broca ──
@@ -775,7 +775,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men',
     notes: ['fresh', 'woody', 'oriental'],
     description: 'Celebrated Middle Eastern citrus-woody ambroxan gem (Tygar / BDC alternative).',
-    aliases: ['rue broca theoreme', 'theoreme', 'rue broca', 'rue broca on time'],
+    aliases: ['rue broca theoreme', 'theoreme'],
   },
 
   // ── Pendora Scents ──
@@ -788,7 +788,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Women / Unisex',
     notes: ['floral', 'fresh', 'powdery'],
     description: 'Paris Corner Pendora creation blending delicate white florals, dewy petals, and soothing musks.',
-    aliases: ['pendora idyll', 'pendora scents', 'pendora', 'paris corner'],
+    aliases: ['pendora scents idyll', 'pendora idyll', 'idyll pendora'],
   },
 
   // ── Maison Alhambra ──
@@ -801,7 +801,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Women',
     notes: ['floral', 'fruity', 'sweet'],
     description: 'Celebrated Middle Eastern floral tribute featuring Turkish rose, lychee, and vanilla cream.',
-    aliases: ['maison alhambra delilah', 'delilah', 'maison alhambra'],
+    aliases: ['maison alhambra delilah', 'delilah'],
   },
 
   // ── Armaf Imperiale ──
@@ -946,7 +946,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men',
     notes: ['sweet', 'oriental', 'aromatic', 'leather'],
     description: 'Intoxicating sweet honey, warm tonka, and golden amber vanilla.',
-    aliases: ['le male elixir', 'jpg elixir', 'ultra male', 'le male', 'jpg le male', 'le beau', 'jpg'],
+    aliases: ['le male elixir', 'jpg elixir', 'jpg le male elixir', 'le male elixir jpg'],
   },
 
   // ── Paco Rabanne ──
@@ -983,7 +983,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men',
     notes: ['fresh', 'woody', 'spicy'],
     description: 'Masterpiece blending bitter orange, flint mineral notes, and cedarwood.',
-    aliases: ['terre d hermes', 'terre d\'hermes', 'hermes'],
+    aliases: ['terre d hermes', "terre d'hermes", 'terre dhermes', 'hermes terre d hermes'],
   },
 
   // ── Lancôme ──
@@ -996,7 +996,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Women',
     notes: ['sweet', 'floral', 'powdery'],
     description: 'Radiant iris gourmand sweetened with praline, spun sugar, and patchouli.',
-    aliases: ['la vie est belle', 'lancome la vie est belle', 'lancome'],
+    aliases: ['la vie est belle', 'lancome la vie est belle', 'lancôme la vie est belle', 'lveb'],
   },
 
   // ──────────────────────────────────────────────────────────────────
@@ -1034,7 +1034,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men',
     notes: ['fresh', 'floral', 'aromatic'],
     description: 'Crisp Diamante lemon, bitter orange leaves, and Mediterranean neroli floral.',
-    aliases: ['versace pour homme', 'versace bright crystal', 'crystal noir'],
+    aliases: ['versace pour homme', 'versace pour homme edt'],
   },
 
   // ── Giorgio Armani ──
@@ -1047,7 +1047,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men',
     notes: ['aquatic', 'fresh', 'aromatic'],
     description: 'Deep oceanic marine notes, green mandarin, and aromatic rosemary.',
-    aliases: ['acqua di gio profondo', 'adg profondo', 'acqua di gio', 'adg'],
+    aliases: ['acqua di gio profondo', 'adg profondo', 'acqua di gio profondo edp'],
   },
 
   // ── Gucci ──
@@ -1082,7 +1082,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men',
     notes: ['fresh', 'aromatic', 'floral', 'woody'],
     description: 'Modern aromatic fougere with Amalfi lemon, lavender, and orange blossom.',
-    aliases: ['gucci guilty', 'gucci guilty pour homme', 'gucci'],
+    aliases: ['gucci guilty pour homme', 'gucci guilty'],
   },
 
   // ── Prada ──
@@ -1106,7 +1106,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men',
     notes: ['powdery', 'floral', 'fresh', 'woody'],
     description: 'The pinnacle of office elegance: luxurious soapy iris, neroli, and cedar.',
-    aliases: ['prada l\'homme', 'prada lhomme', 'prada luna rossa', 'prada'],
+    aliases: ['prada l\'homme', 'prada lhomme', 'prada l\'homme edt'],
   },
 
   // ──────────────────────────────────────────────────────────────────
@@ -1122,7 +1122,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men',
     notes: ['fruity', 'woody', 'fresh', 'leather'],
     description: 'The king of niche perfumery: smoky blackcurrant, juicy pineapple, and birch.',
-    aliases: ['creed aventus', 'aventus', 'creed'],
+    aliases: ['creed aventus', 'aventus'],
   },
   {
     name: 'Creed Silver Mountain Water',
@@ -1133,7 +1133,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['fresh', 'aromatic', 'fruity', 'powdery'],
     description: 'Pure Alpine mountain streams with sparkling green tea and blackcurrant.',
-    aliases: ['silver mountain water', 'green irish tweed', 'millesime imperial'],
+    aliases: ['silver mountain water', 'creed silver mountain water', 'smw', 'creed smw'],
   },
 
   // ── Nishane ──
@@ -1146,7 +1146,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['fruity', 'woody', 'fresh'],
     description: 'Extrait de parfum delivering nuclear pineapple, bergamot, and rich oakmoss.',
-    aliases: ['nishane hacivat', 'hacivat', 'hachivat', 'nishane'],
+    aliases: ['nishane hacivat', 'hacivat', 'hachivat'],
   },
   {
     name: 'Nishane Wulong Cha',
@@ -1157,7 +1157,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['fresh', 'aromatic', 'fruity'],
     description: 'World-renowned photorealistic oolong tea with refreshing citrus and fig.',
-    aliases: ['nishane wulong cha', 'wulong cha', 'nishane ani', 'ani nishane'],
+    aliases: ['nishane wulong cha', 'wulong cha'],
   },
 
   // ── Parfums de Marly ──
@@ -1181,7 +1181,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men / Unisex',
     notes: ['sweet', 'spicy', 'fruity', 'aromatic', 'woody'],
     description: 'Opulent blend of crisp apple, lavender, warm cardamom, and creamy vanilla.',
-    aliases: ['parfums de marly layton', 'pdm layton', 'layton', 'pdm althair', 'althair', 'pdm'],
+    aliases: ['parfums de marly layton', 'pdm layton', 'layton pdm', 'layton'],
   },
 
   // ── Xerjoff ──
@@ -1194,7 +1194,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['sweet', 'aromatic', 'spicy', 'oriental'],
     description: 'Sicilian masterpiece of golden honey, aromatic lavender, and smooth tobacco.',
-    aliases: ['xerjoff naxos', 'naxos', 'erba pura', 'xerjoff'],
+    aliases: ['xerjoff naxos', 'naxos'],
   },
 
   // ── Maison Francis Kurkdjian ──
@@ -1207,7 +1207,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['sweet', 'oriental', 'woody', 'spicy'],
     description: 'Luminous woody-amber with burnt cotton candy sweetness, saffron, and ambergris radiance.',
-    aliases: ['baccarat rouge 540', 'baccarat rouge', 'br540', 'br 540', 'mfk grand soir', 'mfk'],
+    aliases: ['baccarat rouge 540', 'baccarat rouge', 'br540', 'br 540', 'mfk baccarat rouge', 'mfk br540'],
   },
 
   // ── Maison Margiela Replica ──
@@ -1220,7 +1220,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men / Unisex',
     notes: ['sweet', 'leather', 'woody', 'spicy'],
     description: 'Cozy Brooklyn jazz ambiance with aged rum, tobacco leaf, and vanilla.',
-    aliases: ['replica jazz club', 'jazz club', 'by the fireplace', 'lazy sunday morning', 'bubble bath', 'replica'],
+    aliases: ['replica jazz club', 'jazz club', 'margiela jazz club', 'maison margiela jazz club'],
   },
 
   // ── Diptyque ──
@@ -1244,7 +1244,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Women / Unisex',
     notes: ['floral', 'fresh', 'aquatic'],
     description: 'Iconic sea-breeze tuberose and fresh orange blossom inspired by Ha Long Bay coastal memories.',
-    aliases: ['diptyque do son', 'do son', 'doson', 'diptyque'],
+    aliases: ['diptyque do son', 'do son', 'doson'],
   },
 
   // ── Jo Malone ──
@@ -1257,7 +1257,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Women / Unisex',
     notes: ['floral', 'fruity', 'fresh'],
     description: 'British orchard freshness of just-ripe King William pear and white freesias.',
-    aliases: ['english pear & freesia', 'english pear', 'wood sage & sea salt', 'wood sage', 'jo malone'],
+    aliases: ['english pear & freesia', 'english pear and freesia', 'english pear', 'jo malone english pear', 'jo malone english pear & freesia', 'jm english pear'],
   },
 
   // ── Givenchy ──
@@ -1270,7 +1270,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Women',
     notes: ['floral', 'sweet', 'woody'],
     description: 'Thrilling white floral contrast of radiant tuberose, jasmine, orange blossom, and dark vetiver.',
-    aliases: ['givenchy l\'interdit', 'givenchy linterdit', 'l\'interdit', 'linterdit', 'givenchy'],
+    aliases: ['givenchy l\'interdit', 'givenchy linterdit', 'l\'interdit', 'linterdit'],
   },
 
   // ── Narciso Rodriguez ──
@@ -1283,7 +1283,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Women',
     notes: ['floral', 'powdery', 'woody'],
     description: 'Sensual iconic floral-musk masterpiece blending African orange flower, osmanthus, and amber.',
-    aliases: ['narciso rodriguez for her', 'narciso for her', 'for her', 'pure musc', 'narciso rodriguez', 'narciso'],
+    aliases: ['narciso rodriguez for her', 'narciso for her', 'for her'],
   },
 
   // ──────────────────────────────────────────────────────────────────
@@ -1299,7 +1299,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Unisex',
     notes: ['leather', 'spicy', 'floral', 'oriental'],
     description: 'Vast textured black leather layered with floral jasmine, cardamom, and warm amber.',
-    aliases: ['ombre leather', 'ombré leather', 'tobacco vanille', 'lost cherry', 'oud wood', 'black orchid', 'tom ford'],
+    aliases: ['tom ford ombre leather', 'tom ford ombré leather', 'ombre leather', 'ombré leather'],
   },
 
   // ── Montblanc ──
@@ -1312,7 +1312,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men',
     notes: ['fresh', 'woody', 'leather'],
     description: 'Globally celebrated versatile woody-aromatic driven by Italian bergamot and vetiver.',
-    aliases: ['montblanc explorer', 'explorer ultra blue', 'montblanc legend', 'explorer', 'montblanc'],
+    aliases: ['montblanc explorer', 'explorer'],
   },
 
   // ── Nautica ──
@@ -1325,7 +1325,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men',
     notes: ['fresh', 'aquatic', 'fruity', 'floral'],
     description: 'The undisputed budget aquatic king with crisp green leaves and dewy lotus blossom.',
-    aliases: ['nautica voyage', 'voyage nautica', 'nautica'],
+    aliases: ['nautica voyage', 'voyage nautica'],
   },
 
   // ── Davidoff ──
@@ -1338,7 +1338,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men',
     notes: ['fresh', 'aquatic', 'aromatic'],
     description: 'The legendary pioneer of aquatic freshness with sea water, lavender, and crisp mint.',
-    aliases: ['davidoff cool water', 'cool water', 'davidoff'],
+    aliases: ['davidoff cool water', 'cool water'],
   },
 
   // ── Zara ──
@@ -1351,7 +1351,7 @@ export const PERFUME_PRODUCTS = [
     gender: 'Men',
     notes: ['fresh', 'leather', 'woody'],
     description: 'Clean modern high-street favorite crafted with bergamot, bamboo, and soft leather.',
-    aliases: ['zara vibrant leather', 'vibrant leather', 'zara sunrise on the red sand dunes', 'zara'],
+    aliases: ['zara vibrant leather', 'vibrant leather'],
   },
 ];
 

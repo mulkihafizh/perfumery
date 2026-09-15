@@ -1,421 +1,259 @@
 <template>
-  <div class="leaderboard">
-    <!-- Table Header -->
-    <div class="leaderboard__header">
-      <div class="leaderboard__col leaderboard__col--rank">#</div>
-      <div class="leaderboard__col leaderboard__col--name">Perfume Product</div>
-      <div class="leaderboard__col leaderboard__col--region hide-mobile">Origin</div>
-      <div class="leaderboard__col leaderboard__col--bar">Popularity</div>
+  <div class="border border-[#232328] bg-[#151519] overflow-hidden relative">
+    <!-- Subtle Loading Bar -->
+    <div
+      v-if="tableLoading"
+      class="h-0.5 bg-neutral-800 w-full overflow-hidden absolute top-0 left-0 right-0 z-10"
+    >
+      <div class="h-full bg-neutral-200 w-1/3 animate-[pulse_1s_ease-in-out_infinite]" />
+    </div>
+
+    <!-- Table Header (Spec Sheet Matrix Header) -->
+    <div class="grid grid-cols-[44px_1fr_70px_70px] md:grid-cols-[52px_1.8fr_120px_1fr_80px_80px_80px] lg:grid-cols-[52px_1.8fr_130px_1fr_80px_80px_80px_220px] items-center px-4 py-2.5 bg-[#121216] border-b border-[#232328] text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400 select-none">
+      <div class="font-mono text-neutral-400">Idx</div>
+      <div>Perfume Formulation</div>
+      <div class="hidden md:block">Provenance</div>
+      <div class="hidden md:block">Volume Index</div>
       <div
-        class="leaderboard__col leaderboard__col--stat leaderboard__col--sortable"
-        :class="{ 'leaderboard__col--sorted': sortBy === 'mentionCount' }"
-        @click="setSort('mentionCount')"
+        class="text-right cursor-pointer hover:text-neutral-200 transition-colors flex items-center justify-end gap-1"
+        :class="{ 'text-neutral-100 font-bold': isSortedBy('mentionCount') || isSortedBy('mentions') }"
+        @click="$emit('sort', 'mentionCount')"
       >
-        Mentions {{ sortBy === 'mentionCount' ? (sortAsc ? '↑' : '↓') : '' }}
+        <span>Mentions</span>
+        <Icon
+          v-if="isSortedBy('mentionCount') || isSortedBy('mentions')"
+          :name="sortAsc ? 'lucide:arrow-up' : 'lucide:arrow-down'"
+          class="w-3 h-3 text-neutral-300"
+        />
       </div>
       <div
-        class="leaderboard__col leaderboard__col--stat leaderboard__col--sortable"
-        :class="{ 'leaderboard__col--sorted': sortBy === 'threadCount' }"
-        @click="setSort('threadCount')"
+        class="text-right cursor-pointer hover:text-neutral-200 transition-colors flex items-center justify-end gap-1"
+        :class="{ 'text-neutral-100 font-bold': isSortedBy('threadCount') || isSortedBy('threads') }"
+        @click="$emit('sort', 'threadCount')"
       >
-        Threads {{ sortBy === 'threadCount' ? (sortAsc ? '↑' : '↓') : '' }}
+        <span>Threads</span>
+        <Icon
+          v-if="isSortedBy('threadCount') || isSortedBy('threads')"
+          :name="sortAsc ? 'lucide:arrow-up' : 'lucide:arrow-down'"
+          class="w-3 h-3 text-neutral-300"
+        />
       </div>
       <div
-        class="leaderboard__col leaderboard__col--stat leaderboard__col--sortable hide-mobile"
-        :class="{ 'leaderboard__col--sorted': sortBy === 'uniqueAuthors' }"
-        @click="setSort('uniqueAuthors')"
+        class="hidden md:flex text-right cursor-pointer hover:text-neutral-200 transition-colors items-center justify-end gap-1"
+        :class="{ 'text-neutral-100 font-bold': isSortedBy('uniqueAuthors') || isSortedBy('authors') }"
+        @click="$emit('sort', 'uniqueAuthors')"
       >
-        Authors {{ sortBy === 'uniqueAuthors' ? (sortAsc ? '↑' : '↓') : '' }}
+        <span>Authors</span>
+        <Icon
+          v-if="isSortedBy('uniqueAuthors') || isSortedBy('authors')"
+          :name="sortAsc ? 'lucide:arrow-up' : 'lucide:arrow-down'"
+          class="w-3 h-3 text-neutral-300"
+        />
       </div>
-      <div class="leaderboard__col leaderboard__col--notes hide-tablet">Scent Notes</div>
+      <div class="hidden lg:block pl-2">Olfactory Notes</div>
     </div>
 
     <!-- Table Rows -->
-    <NuxtLink
-      v-for="(perfume, index) in sortedPerfumes"
-      :key="perfume.name"
-      :to="`/perfume/${slugify(perfume.name)}`"
-      class="leaderboard__row animate-fade-in-up"
-      :class="{
-        'leaderboard__row--podium': index < 3,
-        [`leaderboard__row--rank-${index + 1}`]: index < 3,
-        'leaderboard__row--local': perfume.region === 'Indonesia',
-      }"
-      :style="{ opacity: 0, animationDelay: `${Math.min(index * 20, 350)}ms` }"
-    >
-      <!-- Rank -->
-      <div class="leaderboard__col leaderboard__col--rank">
-        <span
-          class="rank-medal"
-          :class="index < 3 ? `rank-medal--${index + 1}` : 'rank-medal--default'"
+    <div class="divide-y divide-[#232328]" :class="{ 'opacity-60 transition-opacity': tableLoading }">
+      <NuxtLink
+        v-for="(perfume, index) in perfumes"
+        :key="perfume.name"
+        :to="`/perfume/${slugify(perfume.name)}`"
+        class="group grid grid-cols-[44px_1fr_70px_70px] md:grid-cols-[52px_1.8fr_120px_1fr_80px_80px_80px] lg:grid-cols-[52px_1.8fr_130px_1fr_80px_80px_80px_220px] items-center px-4 py-3 hover:bg-[#1b1b22] transition-colors text-inherit no-underline"
+        :class="pagination.page === 1 && index < 3 ? 'bg-[#18181f]/40' : ''"
+      >
+        <!-- Architectural Index Number -->
+        <div
+          class="font-mono text-xs tabular-nums font-semibold"
+          :class="pagination.page === 1 && index < 3 ? 'text-neutral-200' : 'text-neutral-400'"
         >
-          {{ index < 3 ? medals[index] : index + 1 }}
-        </span>
-      </div>
-
-      <!-- Product Name & Brand -->
-      <div class="leaderboard__col leaderboard__col--name">
-        <div class="perfume-name-row">
-          <span class="region-flag" :title="perfume.region">{{ getRegionFlag(perfume.region) }}</span>
-          <span class="perfume-name">{{ perfume.name }}</span>
+          {{ String(((pagination?.page || 1) - 1) * (pagination?.limit || 25) + index + 1).padStart(2, '0') }}
         </div>
-        <div class="perfume-brand-row">
-          <span class="perfume-brand">{{ perfume.brand }}</span>
-          <span class="dot-separator">•</span>
-          <span class="perfume-category-tag" :class="{ 'perfume-category-tag--local': perfume.region === 'Indonesia' }">
-            {{ perfume.category }}
+
+        <!-- Product Formulation & Brand -->
+        <div class="pr-3 min-w-0">
+          <div class="flex items-center gap-1.5 min-w-0">
+            <span class="text-sm shrink-0" :title="perfume.region">{{ getRegionFlag(perfume.region) }}</span>
+            <span class="text-sm font-bold tracking-tight text-neutral-100 group-hover:text-white truncate">
+              {{ perfume.name }}
+            </span>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-1.5 mt-1 text-[11px] text-neutral-400">
+            <span class="font-medium text-neutral-400">{{ perfume.brand }}</span>
+            <span class="text-neutral-600">•</span>
+            <span class="font-mono text-[10px] uppercase px-1.5 py-0.2 bg-[#0e0e11] border border-[#232328] text-neutral-400">
+              {{ perfume.category }}
+            </span>
+            <span v-if="perfume.gender" class="hidden sm:inline text-neutral-400 text-[10px]">
+              {{ perfume.gender }}
+            </span>
+            <!-- Platform Source Counts -->
+            <span v-if="perfume.sources" class="hidden sm:inline-flex items-center gap-1.5 ml-1 text-[10px] text-neutral-400">
+              <span v-if="perfume.sources.discord && perfume.sources.discord.mentionCount" class="inline-flex items-center gap-0.5" title="Discord mentions">
+                <Icon name="lucide:message-square" class="w-3 h-3 text-indigo-400/80" />
+                <span class="font-mono">{{ perfume.sources.discord.mentionCount }}</span>
+              </span>
+              <span v-if="perfume.sources.reddit && perfume.sources.reddit.mentionCount" class="inline-flex items-center gap-0.5" title="Reddit mentions">
+                <Icon name="lucide:message-circle" class="w-3 h-3 text-orange-400/80" />
+                <span class="font-mono">{{ perfume.sources.reddit.mentionCount }}</span>
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Provenance Region Tag -->
+        <div class="hidden md:block">
+          <span class="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 border border-[#232328] bg-[#0e0e11] text-neutral-300 font-medium">
+            <span>{{ getRegionFlag(perfume.region) }}</span>
+            <span class="truncate">{{ perfume.region }}</span>
           </span>
-          <span v-if="perfume.gender" class="perfume-gender-tag hide-mobile">
-            {{ perfume.gender }}
-          </span>
         </div>
-      </div>
 
-      <!-- Region Badge -->
-      <div class="leaderboard__col leaderboard__col--region hide-mobile">
-        <span class="region-chip" :class="`region-chip--${slugify(perfume.region)}`">
-          {{ getRegionFlag(perfume.region) }} {{ perfume.region }}
-        </span>
-      </div>
-
-      <!-- Popularity Bar -->
-      <div class="leaderboard__col leaderboard__col--bar">
-        <div class="mention-bar-container">
-          <div
-            class="mention-bar"
-            :class="{ 'mention-bar--local': perfume.region === 'Indonesia' }"
-            :style="{ width: `${Math.max(6, (perfume.mentionCount / maxMentions) * 100)}%` }"
-          />
+        <!-- Volume Index Bar -->
+        <div class="hidden md:block pr-4">
+          <div class="w-full bg-[#0e0e11] border border-[#232328] h-1.5 overflow-hidden">
+            <div
+              class="h-full bg-neutral-400 transition-all duration-300"
+              :class="perfume.region === 'Indonesia' ? 'bg-amber-400/90' : 'bg-neutral-400'"
+              :style="{ width: `${Math.max(4, (perfume.mentionCount / Math.max(1, maxMentions)) * 100)}%` }"
+            />
+          </div>
         </div>
-      </div>
 
-      <!-- Mentions -->
-      <div class="leaderboard__col leaderboard__col--stat">
-        <span class="stat-value">{{ perfume.mentionCount }}</span>
-      </div>
+        <!-- Mentions -->
+        <div class="text-right font-mono text-sm tabular-nums font-semibold text-neutral-200">
+          {{ perfume.mentionCount }}
+        </div>
 
-      <!-- Threads -->
-      <div class="leaderboard__col leaderboard__col--stat">
-        <span class="stat-value">{{ perfume.threadCount }}</span>
-      </div>
+        <!-- Threads -->
+        <div class="text-right font-mono text-sm tabular-nums text-neutral-400">
+          {{ perfume.threadCount }}
+        </div>
 
-      <!-- Authors -->
-      <div class="leaderboard__col leaderboard__col--stat hide-mobile">
-        <span class="stat-value">{{ perfume.uniqueAuthors }}</span>
-      </div>
+        <!-- Authors -->
+        <div class="hidden md:block text-right font-mono text-sm tabular-nums text-neutral-400">
+          {{ perfume.uniqueAuthors }}
+        </div>
 
-      <!-- Notes -->
-      <div class="leaderboard__col leaderboard__col--notes hide-tablet">
-        <div class="notes-list">
+        <!-- Scent Accords -->
+        <div class="hidden lg:flex flex-wrap gap-1 pl-2">
           <NotesBadge
             v-for="note in perfume.topNotes"
             :key="note"
             :note="note"
-            :class="{ 'note-badge--highlighted': activeNotes?.includes(note) }"
           />
         </div>
-      </div>
-    </NuxtLink>
+      </NuxtLink>
+    </div>
 
     <!-- Empty state -->
-    <div v-if="sortedPerfumes.length === 0" class="leaderboard__empty">
-      <span class="leaderboard__empty-icon">🔍</span>
-      <p class="leaderboard__empty-title">No perfume products found</p>
-      <p class="leaderboard__empty-desc">No perfumes match the selected filters. Try clearing some options.</p>
+    <div v-if="perfumes.length === 0 && !tableLoading" class="py-16 px-4 text-center">
+      <Icon name="lucide:search-x" class="w-8 h-8 mx-auto text-neutral-500 mb-3" />
+      <p class="text-sm font-semibold text-neutral-200">No catalogue entries match your criteria</p>
+      <p class="text-xs text-neutral-400 mt-1">Adjust or reset your active filters to view community rankings.</p>
+    </div>
+
+    <!-- Pagination & Page Size Control Bar -->
+    <div class="border-t border-[#232328] bg-[#121216] px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-4 select-none">
+      <!-- Items per page selector -->
+      <div class="flex items-center gap-2">
+        <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400 font-mono">
+          Items per page:
+        </span>
+        <div class="inline-flex border border-[#232328] bg-[#0e0e11] p-0.5">
+          <button
+            v-for="option in [10, 25, 50, 100]"
+            :key="option"
+            type="button"
+            class="px-2.5 py-1 text-xs font-mono transition-colors"
+            :class="pagination.limit === option
+              ? 'bg-neutral-200 text-neutral-900 font-bold'
+              : 'text-neutral-400 hover:text-neutral-200'"
+            @click="$emit('change-limit', option)"
+          >
+            {{ option }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Pagination range summary -->
+      <div class="text-[11px] font-mono text-neutral-400">
+        SHOWING
+        <span class="text-neutral-200 font-semibold">{{ rangeStart }}–{{ rangeEnd }}</span>
+        OF
+        <span class="text-neutral-200 font-semibold">{{ pagination.total.toLocaleString() }}</span>
+        CATALOGUED LINES
+      </div>
+
+      <!-- Page navigation buttons -->
+      <div class="flex items-center gap-1.5 font-mono text-xs">
+        <button
+          type="button"
+          :disabled="pagination.page <= 1"
+          class="px-3 py-1.5 border border-[#232328] bg-[#0e0e11] text-neutral-300 hover:bg-[#1b1b22] hover:text-neutral-100 disabled:opacity-30 disabled:pointer-events-none transition-colors flex items-center gap-1"
+          @click="$emit('change-page', pagination.page - 1)"
+        >
+          <Icon name="lucide:chevron-left" class="w-3.5 h-3.5" />
+          <span>PREV</span>
+        </button>
+
+        <span class="px-2 text-neutral-400 text-xs">
+          PAGE <strong class="text-neutral-200">{{ pagination.page }}</strong> / {{ Math.max(1, pagination.totalPages) }}
+        </span>
+
+        <button
+          type="button"
+          :disabled="pagination.page >= pagination.totalPages"
+          class="px-3 py-1.5 border border-[#232328] bg-[#0e0e11] text-neutral-300 hover:bg-[#1b1b22] hover:text-neutral-100 disabled:opacity-30 disabled:pointer-events-none transition-colors flex items-center gap-1"
+          @click="$emit('change-page', pagination.page + 1)"
+        >
+          <span>NEXT</span>
+          <Icon name="lucide:chevron-right" class="w-3.5 h-3.5" />
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { PerfumeEntry } from '~/composables/usePerfumeData'
+import type { PerfumeEntry, PaginationInfo } from '~/composables/usePerfumeData'
 import { slugify, getRegionFlag } from '~/composables/usePerfumeData'
 
-const props = defineProps<{
-  perfumes: PerfumeEntry[]
-  maxMentions: number
-  activeNotes?: string[]
+const props = withDefaults(
+  defineProps<{
+    perfumes: PerfumeEntry[]
+    pagination: PaginationInfo
+    maxMentions: number
+    activeNotes?: string[]
+    tableLoading?: boolean
+    sortBy?: string
+    sortAsc?: boolean
+  }>(),
+  {
+    tableLoading: false,
+    sortBy: 'mentionCount',
+    sortAsc: false,
+  }
+)
+
+defineEmits<{
+  (e: 'change-page', page: number): void
+  (e: 'change-limit', limit: number): void
+  (e: 'sort', key: string): void
 }>()
 
-const medals = ['🥇', '🥈', '🥉']
-
-type SortKey = 'mentionCount' | 'threadCount' | 'uniqueAuthors'
-const sortBy = ref<SortKey>('mentionCount')
-const sortAsc = ref(false)
-
-function setSort(key: SortKey) {
-  if (sortBy.value === key) {
-    sortAsc.value = !sortAsc.value
-  } else {
-    sortBy.value = key
-    sortAsc.value = false
-  }
+function isSortedBy(key: string): boolean {
+  return props.sortBy?.toLowerCase() === key.toLowerCase()
 }
 
-const sortedPerfumes = computed(() => {
-  const items = [...props.perfumes]
-  items.sort((a, b) => {
-    const diff = (b[sortBy.value] as number) - (a[sortBy.value] as number)
-    return sortAsc.value ? -diff : diff
-  })
-  return items
+const rangeStart = computed(() => {
+  if (!props.pagination.total) return 0
+  return (props.pagination.page - 1) * props.pagination.limit + 1
+})
+
+const rangeEnd = computed(() => {
+  if (!props.pagination.total) return 0
+  return Math.min(props.pagination.page * props.pagination.limit, props.pagination.total)
 })
 </script>
-
-<style scoped>
-.leaderboard {
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-}
-
-.leaderboard__header {
-  display: grid;
-  grid-template-columns: 56px 1.8fr 140px 1.1fr 85px 85px 85px 220px;
-  align-items: center;
-  padding: var(--space-3) var(--space-4);
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-subtle);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-tertiary);
-}
-
-.leaderboard__col--sortable {
-  cursor: pointer;
-  user-select: none;
-  transition: color var(--transition-fast);
-}
-
-.leaderboard__col--sortable:hover {
-  color: var(--text-secondary);
-}
-
-.leaderboard__col--sorted {
-  color: var(--accent-gold);
-}
-
-.leaderboard__row {
-  display: grid;
-  grid-template-columns: 56px 1.8fr 140px 1.1fr 85px 85px 85px 220px;
-  align-items: center;
-  padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--border-subtle);
-  transition: all var(--transition-fast);
-  text-decoration: none;
-  color: inherit;
-}
-
-.leaderboard__row:last-child {
-  border-bottom: none;
-}
-
-.leaderboard__row:hover {
-  background: var(--bg-card-hover);
-}
-
-.leaderboard__row--podium {
-  background: rgba(212, 168, 83, 0.03);
-}
-
-.leaderboard__row--rank-1 {
-  background: rgba(255, 215, 0, 0.05);
-}
-
-.leaderboard__row--rank-1:hover {
-  background: rgba(255, 215, 0, 0.09);
-}
-
-.perfume-name-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.region-flag {
-  font-size: 1.1rem;
-}
-
-.perfume-name {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--text-base);
-  color: var(--text-primary);
-  line-height: 1.3;
-}
-
-.perfume-brand-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin-top: 2px;
-}
-
-.perfume-brand {
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
-  font-weight: 500;
-}
-
-.dot-separator {
-  color: var(--text-muted);
-  font-size: 0.7rem;
-}
-
-.perfume-category-tag {
-  font-size: 0.7rem;
-  color: var(--text-tertiary);
-  background: var(--bg-tertiary);
-  padding: 1px 6px;
-  border-radius: var(--radius-sm);
-}
-
-.perfume-category-tag--local {
-  color: var(--accent-gold);
-  background: rgba(212, 168, 83, 0.1);
-  border: 1px solid rgba(212, 168, 83, 0.2);
-}
-
-.perfume-gender-tag {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-}
-
-/* Region Chips */
-.region-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  border-radius: var(--radius-full);
-  font-size: var(--text-xs);
-  background: var(--bg-tertiary);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-subtle);
-  white-space: nowrap;
-}
-
-.region-chip--indonesia {
-  background: rgba(239, 68, 68, 0.1);
-  color: #f87171;
-  border-color: rgba(239, 68, 68, 0.2);
-}
-
-.region-chip--middle-east {
-  background: rgba(245, 158, 11, 0.1);
-  color: #fbbf24;
-  border-color: rgba(245, 158, 11, 0.2);
-}
-
-.region-chip--france {
-  background: rgba(59, 130, 246, 0.1);
-  color: #60a5fa;
-  border-color: rgba(59, 130, 246, 0.2);
-}
-
-.region-chip--italy {
-  background: rgba(16, 185, 129, 0.1);
-  color: #34d399;
-  border-color: rgba(16, 185, 129, 0.2);
-}
-
-.region-chip--niche-houses {
-  background: rgba(168, 85, 247, 0.1);
-  color: #c084fc;
-  border-color: rgba(168, 85, 247, 0.2);
-}
-
-.region-chip--united-states {
-  background: rgba(236, 72, 153, 0.1);
-  color: #f472b6;
-  border-color: rgba(236, 72, 153, 0.2);
-}
-
-.leaderboard__col--stat {
-  text-align: center;
-}
-
-.stat-value {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--text-base);
-  color: var(--text-primary);
-}
-
-.notes-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-1);
-}
-
-.note-badge--highlighted {
-  box-shadow: 0 0 8px rgba(212, 168, 83, 0.4);
-  border-color: var(--accent-gold) !important;
-  transform: scale(1.05);
-}
-
-.leaderboard__empty {
-  padding: var(--space-16) var(--space-8);
-  text-align: center;
-  color: var(--text-tertiary);
-}
-
-.leaderboard__empty-icon {
-  display: block;
-  font-size: 2.5rem;
-  margin-bottom: var(--space-3);
-}
-
-.leaderboard__empty-title {
-  font-size: var(--text-lg);
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--space-1);
-}
-
-.leaderboard__empty-desc {
-  font-size: var(--text-sm);
-  color: var(--text-tertiary);
-}
-
-/* Responsive Breakpoints */
-@media (max-width: 1100px) {
-  .leaderboard__header,
-  .leaderboard__row {
-    grid-template-columns: 50px 1.6fr 120px 1fr 75px 75px 75px;
-  }
-  .hide-tablet {
-    display: none;
-  }
-}
-
-@media (max-width: 860px) {
-  .leaderboard__header,
-  .leaderboard__row {
-    grid-template-columns: 44px 1.8fr 1fr 70px 70px;
-    padding: var(--space-2) var(--space-3);
-  }
-  .hide-mobile {
-    display: none;
-  }
-}
-
-@media (max-width: 540px) {
-  .leaderboard__header,
-  .leaderboard__row {
-    grid-template-columns: 36px 1fr 55px 55px;
-  }
-  .leaderboard__col--bar {
-    display: none;
-  }
-  .perfume-name {
-    font-size: var(--text-sm);
-  }
-  .stat-value {
-    font-size: var(--text-sm);
-  }
-}
-</style>

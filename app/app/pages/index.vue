@@ -1,41 +1,70 @@
 <template>
-  <div class="dashboard">
-    <!-- Hero -->
-    <header class="hero">
-      <div class="container">
-        <div class="hero__content animate-fade-in-up" style="opacity: 0">
-          <div class="hero__badge">🏆 Fragrance Community Rankings</div>
-          <h1 class="hero__title">
-            Perfumery
-            <span class="hero__accent">Leaderboard</span>
-          </h1>
-          <p class="hero__subtitle">
-            Discover the most discussed, hyped, and recommended <strong>fragrance lines & products</strong> from the
-            <strong>Motion Ime</strong> Discord community.
-            <span v-if="meta" class="hero__stat-line">
-              {{ meta.totalMessages.toLocaleString() }} messages scanned •
-              {{ meta.totalPerfumesFound }} distinct perfume products ranked
+  <div class="min-h-screen bg-[#0e0e11] text-[#d4d4d8]">
+    <!-- Top Editorial Masthead / Header -->
+    <header class="border-b border-[#232328] bg-[#121216]/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+        <div class="max-w-3xl">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="w-2 h-2 rounded-none bg-neutral-400" />
+            <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400 font-mono">
+              Olfactory Intelligence Directory • Public Archive
             </span>
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-neutral-100 uppercase font-sans">
+            Perfumery <span class="text-neutral-400 font-light">Leaderboard</span>
+          </h1>
+
+          <p class="mt-3 text-sm sm:text-base text-neutral-400 leading-relaxed font-sans">
+            Minimalist community census tracking community consensus, formulation popularity, and discussion velocity across
+            <strong class="text-neutral-200 font-semibold">Motion Ime Discord</strong> and <strong class="text-neutral-200 font-semibold">r/fragrance Reddit</strong>.
           </p>
+
+          <div v-if="meta" class="mt-4 pt-3 border-t border-[#232328] flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-mono text-neutral-400">
+            <template v-if="meta.sources && meta.sources.reddit.totalComments > 0">
+              <span class="inline-flex items-center gap-1.5 text-neutral-300">
+                <Icon name="lucide:message-square" class="w-3.5 h-3.5 text-indigo-400" />
+                <span>{{ meta.sources.discord.totalMessages.toLocaleString() }} Discord msgs</span>
+              </span>
+              <span class="text-neutral-600">+</span>
+              <span class="inline-flex items-center gap-1.5 text-neutral-300">
+                <Icon name="lucide:message-circle" class="w-3.5 h-3.5 text-orange-400" />
+                <span>{{ meta.sources.reddit.totalComments.toLocaleString() }} Reddit mentions</span>
+              </span>
+            </template>
+            <template v-else-if="meta.sources">
+              <span class="inline-flex items-center gap-1.5 text-neutral-300">
+                <Icon name="lucide:message-square" class="w-3.5 h-3.5 text-indigo-400" />
+                <span>{{ meta.sources.discord.totalMessages.toLocaleString() }} Discord msgs</span>
+              </span>
+            </template>
+            <template v-else>
+              <span>{{ meta.totalMessages.toLocaleString() }} messages scanned</span>
+            </template>
+            <span class="text-neutral-600">•</span>
+            <span class="text-neutral-300 font-semibold">{{ meta.totalPerfumesFound }} distinct perfume lines catalogued</span>
+          </div>
         </div>
       </div>
-      <div class="hero__glow" />
     </header>
 
-    <!-- Loading -->
-    <div v-if="loading" class="container loading-state">
-      <div class="loading-spinner" />
-      <p>Loading perfume data...</p>
+    <!-- Loading State -->
+    <div v-if="loading" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+      <div class="inline-block w-8 h-8 border-2 border-neutral-700 border-t-neutral-200 rounded-full animate-spin mb-4" />
+      <p class="text-xs font-mono uppercase tracking-widest text-neutral-400">Loading catalog archive...</p>
     </div>
 
-    <!-- Error -->
-    <div v-else-if="error" class="container error-state">
-      <p>❌ {{ error }}</p>
+    <!-- Error State -->
+    <div v-else-if="error" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+      <div class="p-6 border border-rose-900/50 bg-rose-950/20 inline-block text-rose-300 max-w-md">
+        <Icon name="lucide:alert-circle" class="w-6 h-6 mx-auto mb-2 text-rose-400" />
+        <p class="text-sm font-semibold">{{ error }}</p>
+      </div>
     </div>
 
-    <!-- Content -->
-    <main v-else-if="meta" class="container">
-      <!-- Stats -->
+    <!-- Main Content Stream -->
+    <main v-else-if="meta" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- 4-Col Spec Sheet Metric Matrix -->
       <StatsOverview
         :total-messages="meta.totalMessages"
         :total-perfumes="meta.totalPerfumesFound"
@@ -43,68 +72,134 @@
         :keyword="meta.keyword"
       />
 
-      <!-- Regional Quick Overview Cards -->
-      <section class="section section--regions">
-        <div class="regions-grid">
+      <!-- Source Toggle & Spec Header Controls -->
+      <section v-if="meta?.sources" class="mb-6 flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#232328]">
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400">
+            Source Partition:
+          </span>
+          <div class="inline-flex border border-[#232328] bg-[#121216] p-0.5">
+            <button
+              type="button"
+              class="px-3 py-1.5 text-xs transition-colors flex items-center gap-1.5 font-medium"
+              :class="activeSource === 'all'
+                ? 'bg-neutral-200 text-neutral-900 font-semibold'
+                : 'text-neutral-400 hover:text-neutral-200'"
+              @click="handleSourceChange('all')"
+            >
+              <Icon name="lucide:layers" class="w-3.5 h-3.5" />
+              <span>Unified Corpus</span>
+            </button>
+            <button
+              type="button"
+              class="px-3 py-1.5 text-xs transition-colors flex items-center gap-1.5 font-medium"
+              :class="activeSource === 'discord'
+                ? 'bg-neutral-200 text-neutral-900 font-semibold'
+                : 'text-neutral-400 hover:text-neutral-200'"
+              @click="handleSourceChange('discord')"
+            >
+              <Icon name="lucide:message-square" class="w-3.5 h-3.5 text-indigo-400" />
+              <span>Discord Only</span>
+            </button>
+            <button
+              type="button"
+              class="px-3 py-1.5 text-xs transition-colors flex items-center gap-1.5 font-medium"
+              :class="activeSource === 'reddit'
+                ? 'bg-neutral-200 text-neutral-900 font-semibold'
+                : 'text-neutral-400 hover:text-neutral-200'"
+              @click="handleSourceChange('reddit')"
+            >
+              <Icon name="lucide:message-circle" class="w-3.5 h-3.5 text-orange-400" />
+              <span>Reddit Only</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="text-[11px] font-mono text-neutral-400">
+          INDEXED: {{ meta.totalPerfumesFound }} PRODUCTS
+        </div>
+      </section>
+
+      <!-- Regional Overview Spec Matrix -->
+      <section class="mb-8">
+        <div class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400 mb-2">
+          Provenance Distribution
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 border border-[#232328] bg-[#151519] divide-x divide-y sm:divide-y-0 divide-[#232328]">
+          <!-- All Provenances Card -->
           <button
-            class="region-card glass-card"
-            :class="{ 'region-card--active': activeRegion === 'ALL' && !localOnly }"
+            type="button"
+            class="p-3 text-left transition-colors flex flex-col justify-between"
+            :class="activeRegion === 'ALL' && !localOnly ? 'bg-neutral-800 text-neutral-100' : 'hover:bg-[#1b1b22] text-neutral-400'"
             @click="setRegionFilter('ALL')"
           >
-            <div class="region-card__icon">🌐</div>
-            <div class="region-card__info">
-              <div class="region-card__name">All Fragrances</div>
-              <div class="region-card__count">{{ meta.totalPerfumesFound }} Products</div>
+            <div class="text-base mb-1">🌐</div>
+            <div>
+              <div class="text-xs font-bold text-neutral-200 truncate">All Regions</div>
+              <div class="font-mono text-[10px] text-neutral-400 tabular-nums mt-0.5">{{ meta.totalPerfumesFound }} lines</div>
             </div>
           </button>
 
+          <!-- Each Region Card -->
           <button
             v-for="(summary, regionKey) in (regions || {})"
             :key="regionKey"
-            class="region-card glass-card"
-            :class="{
-              'region-card--active': (activeRegion === regionKey) || (regionKey === 'Indonesia' && localOnly),
-              'region-card--local': regionKey === 'Indonesia',
-            }"
+            type="button"
+            class="p-3 text-left transition-colors flex flex-col justify-between"
+            :class="(activeRegion === regionKey) || (regionKey === 'Indonesia' && localOnly)
+              ? 'bg-neutral-800 text-neutral-100'
+              : 'hover:bg-[#1b1b22] text-neutral-400'"
             @click="setRegionFilter(String(regionKey))"
           >
-            <div class="region-card__icon">{{ getRegionFlag(String(regionKey)) }}</div>
-            <div class="region-card__info">
-              <div class="region-card__name">{{ regionKey }}</div>
-              <div class="region-card__count">{{ summary.count }} Products ({{ summary.totalMentions }} mentions)</div>
+            <div class="text-base mb-1">{{ getRegionFlag(String(regionKey)) }}</div>
+            <div>
+              <div class="text-xs font-bold text-neutral-200 truncate">{{ regionKey }}</div>
+              <div class="font-mono text-[10px] text-neutral-400 tabular-nums mt-0.5">
+                {{ summary.count }} ({{ summary.totalMentions }}m)
+              </div>
             </div>
           </button>
         </div>
       </section>
 
-      <!-- Section: Leaderboard -->
-      <section class="section" id="leaderboard">
-        <div class="section__header section__header--flex">
+      <!-- Section: Leaderboard Table -->
+      <section id="leaderboard" class="mb-12">
+        <div class="flex flex-wrap items-end justify-between gap-4 mb-4">
           <div>
-            <h2 class="section__title">
-              🏆 Top Perfume Lines
-              <span v-if="localOnly" class="section__badge-filter">🇮🇩 Local Indonesian Brands</span>
-              <span v-else-if="activeRegion !== 'ALL'" class="section__badge-filter">{{ getRegionFlag(activeRegion) }} {{ activeRegion }}</span>
-              <span v-if="activeNotes && activeNotes.length > 0" class="section__badge-filter section__badge-filter--notes">
-                🌸 Notes: {{ activeNotes.join(' + ') }}
+            <div class="flex items-center gap-2">
+              <h2 class="text-lg font-bold tracking-tight text-neutral-100 uppercase">
+                Product Rankings
+              </h2>
+              <span v-if="localOnly" class="text-[10px] font-mono px-2 py-0.5 border border-amber-800/80 bg-amber-950/40 text-amber-300">
+                PROVENANCE: INDONESIA (LOCAL)
               </span>
-            </h2>
-            <p class="section__subtitle">
-              Showing {{ filteredPerfumes.length }} of {{ meta.totalPerfumesFound }} perfume products
+              <span v-else-if="activeRegion !== 'ALL'" class="text-[10px] font-mono px-2 py-0.5 border border-[#232328] bg-[#121216] text-neutral-300">
+                PROVENANCE: {{ activeRegion }}
+              </span>
+              <span v-if="activeNotes && activeNotes.length > 0" class="text-[10px] font-mono px-2 py-0.5 border border-rose-900/60 bg-rose-950/30 text-rose-300">
+                ACCORDS: {{ activeNotes.join(' + ') }}
+              </span>
+            </div>
+            <p class="text-xs text-neutral-400 mt-1">
+              Displaying {{ pagination.total.toLocaleString() }} of {{ meta.totalPerfumesFound.toLocaleString() }} catalogued formulations
             </p>
           </div>
+
           <button
             v-if="hasActiveFilters"
-            class="btn btn--ghost btn--reset"
-            @click="resetFilters"
+            type="button"
+            class="text-xs font-mono uppercase tracking-wider text-rose-400 hover:text-rose-300 border border-rose-900/60 bg-rose-950/30 px-3 py-1.5 transition-colors flex items-center gap-1.5"
+            @click="handleResetFilters"
           >
-            Reset Filters ✕
+            <span>Reset Active Filters</span>
+            <Icon name="lucide:x" class="w-3.5 h-3.5" />
           </button>
         </div>
 
+        <!-- Search & Dynamic Filter Component -->
         <SearchBar
           ref="searchBarRef"
-          placeholder="Search by perfume line (e.g. Hawas, MYSLF, Ostara, Sauvage), brand, or note..."
+          placeholder="Search catalogue by line (Hawas, MYSLF, Sauvage), brand, or accord..."
           :initial-notes="activeNotes"
           :initial-region="activeRegion"
           :initial-local-only="localOnly"
@@ -114,569 +209,220 @@
           @filter-local-only="onFilterLocalOnly"
         />
 
+        <!-- Leaderboard Table Matrix with Pagination -->
         <LeaderboardTable
-          :perfumes="filteredPerfumes"
+          :perfumes="perfumes"
+          :pagination="pagination"
           :max-mentions="maxMentions"
           :active-notes="activeNotes"
+          :table-loading="tableLoading"
+          :sort-by="sortBy"
+          :sort-asc="sortAsc"
+          @change-page="setPage"
+          @change-limit="setLimit"
+          @sort="setSort"
         />
       </section>
 
-      <!-- Section: Top Contributors -->
-      <section class="section" id="contributors">
-        <div class="section__header">
-          <h2 class="section__title">👥 Top Community Fragrance Contributors</h2>
-          <p class="section__subtitle">Most active perfume enthusiasts in the discussion</p>
+      <!-- Section: Top Community Contributors -->
+      <section id="contributors" class="mb-12 pt-8 border-t border-[#232328]">
+        <div class="mb-4">
+          <div class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400 font-mono">
+            Contributor Census
+          </div>
+          <h2 class="text-lg font-bold tracking-tight text-neutral-100 uppercase">
+            Top Community Fragrance Evaluators
+          </h2>
+          <p class="text-xs text-neutral-400 mt-0.5">
+            Most active olfactory commentators in the indexed corpus
+          </p>
         </div>
 
-        <div class="contributors-grid">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 border border-[#232328] bg-[#151519] divide-y sm:divide-y-0 sm:divide-x divide-[#232328]">
           <div
             v-for="(contrib, index) in (topContributors || []).slice(0, 10)"
             :key="contrib.username"
-            class="contributor-card glass-card animate-fade-in-up"
-            :style="{ opacity: 0, animationDelay: `${index * 40}ms` }"
+            class="p-4 flex flex-col justify-between hover:bg-[#1b1b22] transition-colors"
           >
-            <div class="contributor-rank">
-              <span
-                class="rank-medal"
-                :class="index < 3 ? `rank-medal--${index + 1}` : 'rank-medal--default'"
-              >
-                {{ index < 3 ? ['🥇','🥈','🥉'][index] : index + 1 }}
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-mono text-xs font-bold text-neutral-400">
+                0{{ index + 1 }}
+              </span>
+              <span class="font-mono text-[10px] text-neutral-400">
+                {{ contrib.messageCount }} msgs
               </span>
             </div>
-            <div class="contributor-info">
-              <div class="contributor-name">{{ contrib.name }}</div>
-              <div class="contributor-stats">
-                <span>{{ contrib.messageCount }} msgs</span>
-                <span class="contributor-separator">•</span>
-                <span>{{ contrib.perfumesMentioned }} perfumes discussed</span>
+            <div>
+              <div class="text-sm font-bold text-neutral-200 truncate">{{ contrib.name }}</div>
+              <div class="text-[11px] text-neutral-400 font-mono mt-0.5">
+                {{ contrib.perfumesMentioned }} perfumes cited
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Section: Note Categories -->
-      <section class="section" id="categories">
-        <div class="section__header">
-          <h2 class="section__title">🎨 Scent Note Families</h2>
-          <p class="section__subtitle">Click any category card below to filter the leaderboard</p>
+      <!-- Section: Scent Accord Directory -->
+      <section id="categories" class="pt-8 border-t border-[#232328]">
+        <div class="mb-4">
+          <div class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400 font-mono">
+            Olfactory Taxonomy
+          </div>
+          <h2 class="text-lg font-bold tracking-tight text-neutral-100 uppercase">
+            Scent Accord Families
+          </h2>
+          <p class="text-xs text-neutral-400 mt-0.5">
+            Click any accord card to isolate matched formulations in the catalogue
+          </p>
         </div>
 
-        <div class="categories-grid">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border border-[#232328] bg-[#151519] divide-y sm:divide-y-0 divide-[#232328]">
           <div
             v-for="(cat, note) in (categories || {})"
             :key="note"
-            class="category-card glass-card"
-            :class="{ 'category-card--active': activeNotes && activeNotes.includes(String(note)) }"
+            class="p-4 cursor-pointer transition-colors flex flex-col justify-between"
+            :class="activeNotes && activeNotes.includes(String(note))
+              ? 'bg-neutral-800 text-neutral-100'
+              : 'hover:bg-[#1b1b22]'"
             @click="toggleNoteCategory(String(note))"
           >
-            <div class="category-header">
+            <div class="flex items-center justify-between mb-2">
               <NotesBadge :note="String(note)" />
-              <span v-if="activeNotes && activeNotes.includes(String(note))" class="category-active-tag">Active ✓</span>
+              <span v-if="activeNotes && activeNotes.includes(String(note))" class="text-[10px] font-mono text-rose-300">
+                ACTIVE
+              </span>
             </div>
-            <div class="category-count">{{ cat.count }} perfumes</div>
-            <div class="category-examples">
-              {{ (cat.perfumes || []).slice(0, 3).join(', ') }}
+            <div class="font-mono text-xs font-semibold tabular-nums text-neutral-300 mt-2">
+              {{ cat.count }} formulations
+            </div>
+            <div class="text-[11px] text-neutral-400 truncate mt-1">
+              {{ (cat.perfumes || []).slice(0, 2).join(', ') }}
             </div>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="container">
-        <p class="footer__text">
-          Data extracted from <strong>Motion Ime</strong> Discord Perfumery Channel •
-          <span v-if="meta">Processed {{ formatDate(meta.generatedAt) }}</span>
-        </p>
+    <!-- Archival Print Catalog Footer -->
+    <footer class="mt-20 border-t border-[#232328] bg-[#0c0c0f] py-8 text-neutral-400 text-xs font-mono">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          Corpus: Motion Ime Discord
+          <template v-if="meta?.sources"> + r/fragrance Reddit ({{ meta.sources.reddit.yearsRange }})</template>
+        </div>
+        <div v-if="meta">
+          ARCHIVE GENERATED: {{ formatDate(meta.generatedAt) }}
+        </div>
       </div>
     </footer>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { PerfumeEntry } from '~/composables/usePerfumeData'
+import type { SourceFilter } from '~/composables/usePerfumeData'
 import { formatDate, getRegionFlag } from '~/composables/usePerfumeData'
 
 const {
   loading,
   error,
   meta,
-  leaderboard,
   regions,
-  maxMentions,
-  topContributors,
   categories,
+  topContributors,
+  maxMentions,
   fetchData,
+  // Paginated table state
+  perfumes,
+  pagination,
+  tableLoading,
+  fetchPerfumes,
+  // Filter state & actions
+  searchQuery,
+  activeRegion,
+  localOnly,
+  activeNotes,
+  activeSource,
+  sortBy,
+  sortAsc,
+  setPage,
+  setLimit,
+  setSort,
+  setSearch,
+  setRegion,
+  setNotes,
+  setSource,
+  resetFilters,
 } = usePerfumeData()
 
-// Filter state
-const searchQuery = ref('')
-const activeRegion = ref('ALL')
-const localOnly = ref(false)
-const activeNotes = ref<string[]>([])
 const searchBarRef = ref<any>(null)
 
 const hasActiveFilters = computed(() => {
-  return searchQuery.value !== '' || activeRegion.value !== 'ALL' || localOnly.value || (activeNotes.value && activeNotes.value.length > 0)
-})
-
-function getPerfumeNotes(p: PerfumeEntry): string[] {
-  if (!p) return []
-  return p.notes || p.topNotes || p.catalogNotes || []
-}
-
-const filteredPerfumes = computed<PerfumeEntry[]>(() => {
-  let items = leaderboard.value || []
-
-  // Text search (name, brand, notes, description)
-  if (searchQuery.value) {
-    const q = searchQuery.value.trim().toLowerCase()
-    items = items.filter(p => {
-      const pNotes = getPerfumeNotes(p)
-      return (
-        (p.name && p.name.toLowerCase().includes(q)) ||
-        (p.brand && p.brand.toLowerCase().includes(q)) ||
-        pNotes.some(n => n.toLowerCase().includes(q)) ||
-        (p.description && p.description.toLowerCase().includes(q))
-      )
-    })
-  }
-
-  // Local only filter
-  if (localOnly.value) {
-    items = items.filter(p => p.region === 'Indonesia')
-  } else if (activeRegion.value && activeRegion.value !== 'ALL') {
-    // Region filter
-    items = items.filter(p => p.region === activeRegion.value)
-  }
-
-  // Note filter: matches perfumes that contain any of the selected notes
-  if (activeNotes.value && activeNotes.value.length > 0) {
-    items = items.filter(p => {
-      const pNotes = getPerfumeNotes(p)
-      return activeNotes.value.some(selectedNote => pNotes.includes(selectedNote))
-    })
-  }
-
-  return items
+  return (
+    searchQuery.value !== '' ||
+    activeRegion.value !== 'ALL' ||
+    localOnly.value ||
+    (activeNotes.value && activeNotes.value.length > 0) ||
+    activeSource.value !== 'all'
+  )
 })
 
 function onSearch(query: string) {
-  searchQuery.value = query
+  setSearch(query)
 }
 
 function onFilterRegion(region: string) {
-  activeRegion.value = region
+  setRegion(region)
 }
 
 function onFilterLocalOnly(val: boolean) {
-  localOnly.value = val
   if (val) {
-    activeRegion.value = 'Indonesia'
+    setRegion('Indonesia')
+  } else {
+    setRegion('ALL')
   }
 }
 
 function onFilterNotes(notes: string[]) {
-  activeNotes.value = notes
+  setNotes(notes)
 }
 
 function setRegionFilter(reg: string) {
-  if (reg === 'Indonesia') {
-    localOnly.value = true
-    activeRegion.value = 'Indonesia'
-  } else {
-    localOnly.value = false
-    activeRegion.value = reg
-  }
+  setRegion(reg)
   if (searchBarRef.value?.setRegion) {
     searchBarRef.value.setRegion(reg)
   }
 }
 
+function handleSourceChange(src: SourceFilter) {
+  setSource(src)
+}
+
 function toggleNoteCategory(note: string) {
-  if (!activeNotes.value) activeNotes.value = []
-  const idx = activeNotes.value.indexOf(note)
+  const current = [...activeNotes.value]
+  const idx = current.indexOf(note)
   if (idx >= 0) {
-    activeNotes.value.splice(idx, 1)
+    current.splice(idx, 1)
   } else {
-    activeNotes.value.push(note)
+    current.push(note)
   }
+  setNotes(current)
   if (searchBarRef.value?.setNotes) {
-    searchBarRef.value.setNotes([...activeNotes.value])
+    searchBarRef.value.setNotes(current)
   }
 }
 
-function resetFilters() {
-  searchQuery.value = ''
-  activeRegion.value = 'ALL'
-  localOnly.value = false
-  activeNotes.value = []
+function handleResetFilters() {
+  resetFilters()
   if (searchBarRef.value?.reset) {
     searchBarRef.value.reset()
   }
 }
 
-onMounted(() => {
-  fetchData()
+onMounted(async () => {
+  await Promise.all([fetchData(), fetchPerfumes()])
 })
 
 useHead({
   title: 'Perfumery Product Leaderboard — Community Fragrance Rankings',
 })
 </script>
-
-<style scoped>
-/* Hero */
-.hero {
-  position: relative;
-  padding: var(--space-20) 0 var(--space-12);
-  overflow: hidden;
-}
-
-.hero__glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(212, 168, 83, 0.08) 0%, transparent 70%);
-  pointer-events: none;
-  animation: pulse-glow 4s ease-in-out infinite;
-}
-
-.hero__content {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  max-width: 760px;
-  margin: 0 auto;
-}
-
-.hero__badge {
-  display: inline-block;
-  padding: var(--space-1) var(--space-4);
-  background: var(--accent-gold-dim);
-  color: var(--accent-gold);
-  border: 1px solid rgba(212, 168, 83, 0.2);
-  border-radius: var(--radius-full);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: var(--space-6);
-}
-
-.hero__title {
-  font-family: var(--font-display);
-  font-size: var(--text-6xl);
-  font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: var(--space-6);
-  letter-spacing: -0.02em;
-}
-
-.hero__accent {
-  background: var(--gradient-gold);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.hero__subtitle {
-  font-size: var(--text-lg);
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 620px;
-  margin: 0 auto;
-}
-
-.hero__stat-line {
-  display: block;
-  margin-top: var(--space-2);
-  font-size: var(--text-sm);
-  color: var(--text-tertiary);
-}
-
-/* Regional Quick Overview Grid */
-.section--regions {
-  margin-bottom: var(--space-8);
-}
-
-.regions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: var(--space-3);
-}
-
-.region-card {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  text-align: left;
-  transition: all var(--transition-base);
-  color: inherit;
-}
-
-.region-card:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-medium);
-  transform: translateY(-2px);
-}
-
-.region-card--active {
-  background: rgba(212, 168, 83, 0.12);
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 16px rgba(212, 168, 83, 0.2);
-}
-
-.region-card--local.region-card--active {
-  background: rgba(239, 68, 68, 0.12);
-  border-color: #ef4444;
-  box-shadow: 0 0 16px rgba(239, 68, 68, 0.2);
-}
-
-.region-card__icon {
-  font-size: 1.5rem;
-}
-
-.region-card__name {
-  font-weight: 600;
-  font-size: var(--text-sm);
-  color: var(--text-primary);
-  line-height: 1.2;
-}
-
-.region-card__count {
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
-  margin-top: 2px;
-}
-
-/* Sections */
-.section {
-  margin-bottom: var(--space-16);
-}
-
-.section__header {
-  margin-bottom: var(--space-6);
-}
-
-.section__header--flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: var(--space-4);
-}
-
-.section__title {
-  font-size: var(--text-2xl);
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-}
-
-.section__badge-filter {
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--accent-gold);
-  background: var(--accent-gold-dim);
-  padding: 2px 10px;
-  border-radius: var(--radius-full);
-  border: 1px solid rgba(212, 168, 83, 0.25);
-}
-
-.section__badge-filter--notes {
-  color: var(--accent-rose);
-  background: var(--accent-rose-dim);
-  border-color: rgba(244, 114, 182, 0.25);
-}
-
-.section__subtitle {
-  font-size: var(--text-sm);
-  color: var(--text-tertiary);
-  margin-top: var(--space-1);
-}
-
-.btn--reset {
-  padding: var(--space-2) var(--space-3);
-  font-size: var(--text-xs);
-  color: var(--accent-coral);
-  border-color: rgba(251, 113, 133, 0.3);
-}
-
-.btn--reset:hover {
-  background: rgba(251, 113, 133, 0.1);
-  border-color: var(--accent-coral);
-}
-
-/* Contributors */
-.contributors-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-3);
-}
-
-.contributor-card {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-4) var(--space-5);
-}
-
-.contributor-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.contributor-name {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--text-base);
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.contributor-stats {
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
-  margin-top: 2px;
-}
-
-.contributor-separator {
-  margin: 0 var(--space-1);
-}
-
-/* Categories */
-.categories-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: var(--space-3);
-}
-
-.category-card {
-  padding: var(--space-5);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  cursor: pointer;
-  transition: all var(--transition-base);
-}
-
-.category-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--border-medium);
-}
-
-.category-card--active {
-  border-color: var(--accent-rose);
-  background: rgba(244, 114, 182, 0.08);
-  box-shadow: 0 0 16px rgba(244, 114, 182, 0.2);
-}
-
-.category-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.category-active-tag {
-  font-size: var(--text-xs);
-  color: var(--accent-rose);
-  font-weight: 600;
-}
-
-.category-count {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--text-lg);
-  color: var(--text-primary);
-}
-
-.category-examples {
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
-  line-height: 1.4;
-}
-
-/* Footer */
-.footer {
-  padding: var(--space-12) 0;
-  border-top: 1px solid var(--border-subtle);
-  margin-top: var(--space-16);
-}
-
-.footer__text {
-  text-align: center;
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-}
-
-/* Loading */
-.loading-state {
-  text-align: center;
-  padding: var(--space-24) 0;
-  color: var(--text-tertiary);
-}
-
-.loading-spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid var(--border-subtle);
-  border-top-color: var(--accent-gold);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto var(--space-4);
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.error-state {
-  text-align: center;
-  padding: var(--space-16) 0;
-  color: var(--accent-coral);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .hero {
-    padding: var(--space-16) 0 var(--space-10);
-  }
-
-  .hero__title {
-    font-size: var(--text-4xl);
-  }
-
-  .hero__subtitle {
-    font-size: var(--text-base);
-  }
-
-  .contributors-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .section__header--flex {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero__title {
-    font-size: var(--text-3xl);
-  }
-}
-</style>

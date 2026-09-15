@@ -9,7 +9,18 @@ dist/
 
 # Large raw data files (GitHub 100MB limit)
 raw-export.json
+*.zst
 *.log
+
+# Generated pipeline outputs
+perfume_catalog.json
+reddit_perfume_rankings.json
+match_evaluation_log.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
 
 # Environment & local files
 .env

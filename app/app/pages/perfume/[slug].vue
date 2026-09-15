@@ -1,60 +1,76 @@
 <template>
-  <div class="perfume-detail">
-    <!-- Loading -->
-    <div v-if="loading" class="container loading-state">
-      <div class="loading-spinner" />
-      <p>Loading perfume details...</p>
+  <div class="min-h-screen bg-[#0e0e11] text-[#d4d4d8]">
+    <!-- Loading State -->
+    <div v-if="loading" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+      <div class="inline-block w-8 h-8 border-2 border-neutral-700 border-t-neutral-200 rounded-full animate-spin mb-4" />
+      <p class="text-xs font-mono uppercase tracking-widest text-neutral-400">Loading catalogue record...</p>
     </div>
 
-    <!-- Not Found -->
-    <div v-else-if="!perfume" class="container not-found">
-      <h1>Perfume not found</h1>
-      <p>The perfume line you're looking for doesn't exist in our current rankings.</p>
-      <NuxtLink to="/" class="btn btn--ghost">← Back to Leaderboard</NuxtLink>
+    <!-- Not Found State -->
+    <div v-else-if="!perfume" class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+      <Icon name="lucide:file-question" class="w-12 h-12 mx-auto text-neutral-600 mb-4" />
+      <h1 class="text-xl font-bold uppercase tracking-tight text-neutral-100 mb-2">
+        Catalogue Record Not Found
+      </h1>
+      <p class="text-sm text-neutral-400 mb-6">
+        The requested perfume line does not appear in the current indexed community ranking.
+      </p>
+      <NuxtLink
+        to="/"
+        class="inline-flex items-center gap-2 px-4 py-2 border border-[#232328] bg-[#151519] text-xs font-mono uppercase tracking-wider text-neutral-200 hover:bg-[#1b1b22] hover:border-neutral-500 transition-colors"
+      >
+        <Icon name="lucide:arrow-left" class="w-4 h-4" />
+        <span>Return to Master Leaderboard</span>
+      </NuxtLink>
     </div>
 
-    <!-- Detail Content -->
+    <!-- Detail Spec Sheet Content -->
     <div v-else>
-      <!-- Hero -->
-      <header class="detail-hero">
-        <div class="container">
-          <NuxtLink to="/" class="back-link">← Back to Leaderboard</NuxtLink>
+      <!-- Editorial Masthead / Header -->
+      <header class="border-b border-[#232328] bg-[#121216]/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+          <NuxtLink
+            to="/"
+            class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-neutral-400 hover:text-neutral-100 transition-colors mb-6 group"
+          >
+            <Icon name="lucide:arrow-left" class="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
+            <span>Catalogue Archive</span>
+          </NuxtLink>
 
-          <div class="detail-hero__content animate-fade-in-up" style="opacity: 0">
-            <div class="detail-hero__rank">
-              <span
-                class="rank-medal rank-medal--lg"
-                :class="perfume.rank <= 3 ? `rank-medal--${perfume.rank}` : 'rank-medal--default'"
-              >
-                {{ perfume.rank <= 3 ? ['🥇','🥈','🥉'][perfume.rank - 1] : `#${perfume.rank}` }}
-              </span>
-            </div>
-
-            <div class="detail-hero__info">
-              <!-- Meta Badges -->
-              <div class="detail-hero__meta-badges">
-                <span class="region-badge">
-                  {{ getRegionFlag(perfume.region) }} {{ perfume.region }}
+          <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
+            <div class="max-w-3xl">
+              <!-- Meta Tags Spec Row -->
+              <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 border border-[#232328] bg-[#151519] text-neutral-300 font-medium">
+                  <span>{{ getRegionFlag(perfume.region) }}</span>
+                  <span>{{ perfume.region }}</span>
                 </span>
-                <span class="category-badge" :class="{ 'category-badge--local': perfume.region === 'Indonesia' }">
+                <span class="text-[10px] font-mono uppercase px-2 py-0.5 border border-[#232328] bg-[#151519] text-neutral-400">
                   {{ perfume.category }}
                 </span>
-                <span v-if="perfume.gender" class="gender-badge">
-                  👤 {{ perfume.gender }}
+                <span v-if="perfume.gender" class="text-[10px] font-mono uppercase px-2 py-0.5 border border-[#232328] bg-[#151519] text-neutral-400">
+                  {{ perfume.gender }}
+                </span>
+                <span v-if="perfume.region === 'Indonesia'" class="text-[10px] font-mono uppercase px-2 py-0.5 border border-amber-800/80 bg-amber-950/40 text-amber-300 font-semibold">
+                  🇮🇩 Local Atelier
                 </span>
               </div>
 
               <!-- Brand & Name -->
-              <div class="detail-hero__brand">{{ perfume.brand }}</div>
-              <h1 class="detail-hero__name">{{ perfume.name }}</h1>
+              <div class="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400 font-mono mb-1">
+                {{ perfume.brand }}
+              </div>
+              <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-neutral-100 uppercase">
+                {{ perfume.name }}
+              </h1>
 
               <!-- Description -->
-              <p v-if="perfume.description" class="detail-hero__desc">
+              <p v-if="perfume.description" class="mt-3 text-sm sm:text-base text-neutral-400 leading-relaxed max-w-2xl font-sans">
                 {{ perfume.description }}
               </p>
 
-              <!-- Notes -->
-              <div class="detail-hero__notes">
+              <!-- Top Notes / Accords -->
+              <div class="flex flex-wrap gap-1.5 mt-4">
                 <NotesBadge
                   v-for="note in perfume.topNotes"
                   :key="note"
@@ -62,93 +78,284 @@
                 />
               </div>
             </div>
+
+            <!-- Architectural Rank Box -->
+            <div class="border border-[#232328] bg-[#151519] p-4 sm:p-5 flex md:flex-col items-center justify-between md:justify-center shrink-0 min-w-[140px] text-center">
+              <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400">
+                Archive Index
+              </span>
+              <div class="font-mono text-3xl sm:text-4xl font-bold tabular-nums text-neutral-100 my-1">
+                #{{ perfume.rank }}
+              </div>
+              <span class="font-mono text-[10px] text-neutral-400">
+                Rank in Corpus
+              </span>
+            </div>
           </div>
         </div>
       </header>
 
-      <main class="container">
-        <!-- Stats Grid -->
-        <div class="detail-stats animate-fade-in-up" style="opacity: 0; animation-delay: 100ms">
-          <div class="detail-stat-card">
-            <div class="stat-number">{{ perfume.mentionCount }}</div>
-            <div class="stat-label">Total Mentions</div>
-          </div>
-          <div class="detail-stat-card">
-            <div class="stat-number">{{ perfume.threadCount }}</div>
-            <div class="stat-label">Threads</div>
-          </div>
-          <div class="detail-stat-card">
-            <div class="stat-number">{{ perfume.uniqueAuthors }}</div>
-            <div class="stat-label">Unique Members</div>
-          </div>
-          <div class="detail-stat-card">
-            <div class="stat-number">#{{ perfume.rank }}</div>
-            <div class="stat-label">Product Rank</div>
-          </div>
-        </div>
-
-        <!-- Activity Timeline -->
-        <div class="detail-section animate-fade-in-up" style="opacity: 0; animation-delay: 200ms">
-          <h2 class="section__title">📅 Discussion Period</h2>
-          <div class="timeline-bar">
-            <div class="timeline-date">{{ formatDate(perfume.firstMentioned) }}</div>
-            <div class="timeline-line">
-              <div class="timeline-dot" />
-              <div class="timeline-connector" />
-              <div class="timeline-dot" />
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+        <!-- 4-Stat Spec Sheet Grid -->
+        <section>
+          <div class="grid grid-cols-2 md:grid-cols-4 border border-[#232328] bg-[#151519] divide-y md:divide-y-0 md:divide-x divide-[#232328]">
+            <div class="p-4 sm:p-5">
+              <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400 block mb-1">
+                Total Mentions
+              </span>
+              <div class="font-mono text-2xl sm:text-3xl font-bold tabular-nums text-neutral-100">
+                {{ perfume.mentionCount }}
+              </div>
+              <div class="text-[11px] text-neutral-400 mt-1 font-mono">Aggregated volume</div>
             </div>
-            <div class="timeline-date">{{ formatDate(perfume.lastMentioned) }}</div>
-          </div>
-        </div>
 
-        <!-- Co-Mentions (Frequently Discussed Together) -->
-        <div v-if="perfume.coMentions.length" class="detail-section animate-fade-in-up" style="opacity: 0; animation-delay: 300ms">
-          <h2 class="section__title">🔗 Frequently Compared / Discussed With</h2>
-          <p class="section__subtitle">Other fragrances appearing in the same conversations</p>
-          <div class="co-mentions-grid">
+            <div class="p-4 sm:p-5">
+              <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400 block mb-1">
+                Discussion Threads
+              </span>
+              <div class="font-mono text-2xl sm:text-3xl font-bold tabular-nums text-neutral-100">
+                {{ perfume.threadCount }}
+              </div>
+              <div class="text-[11px] text-neutral-400 mt-1 font-mono">Conversational sessions</div>
+            </div>
+
+            <div class="p-4 sm:p-5">
+              <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400 block mb-1">
+                Unique Members
+              </span>
+              <div class="font-mono text-2xl sm:text-3xl font-bold tabular-nums text-neutral-100">
+                {{ perfume.uniqueAuthors }}
+              </div>
+              <div class="text-[11px] text-neutral-400 mt-1 font-mono">Distinct community voices</div>
+            </div>
+
+            <div class="p-4 sm:p-5">
+              <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400 block mb-1">
+                Direct Keyword Hits
+              </span>
+              <div class="font-mono text-2xl sm:text-3xl font-bold tabular-nums text-neutral-100">
+                {{ perfume.directKeywordMentions || perfume.mentionCount }}
+              </div>
+              <div class="text-[11px] text-neutral-400 mt-1 font-mono">Exact line mentions</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Activity Timeline & Provenance -->
+        <section class="border border-[#232328] bg-[#151519] p-5">
+          <div class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400 mb-3">
+            Discussion Temporal Interval
+          </div>
+          <div class="flex items-center justify-between text-xs font-mono text-neutral-300">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 bg-neutral-400" />
+              <span>Earliest: {{ formatDate(perfume.firstMentioned) }}</span>
+            </div>
+            <div class="flex-1 mx-4 border-t border-dashed border-neutral-700" />
+            <div class="flex items-center gap-2">
+              <span>Latest: {{ formatDate(perfume.lastMentioned) }}</span>
+              <span class="w-2 h-2 bg-neutral-400" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Platform Source Partition Breakdown -->
+        <section
+          v-if="perfume.sources && (perfume.sources.discord.mentionCount || perfume.sources.reddit.mentionCount)"
+          class="border border-[#232328] bg-[#151519] p-5"
+        >
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h2 class="text-xs font-semibold uppercase tracking-[0.15em] text-neutral-400">
+                Platform Distribution Partition
+              </h2>
+              <p class="text-xs text-neutral-400 mt-0.5">
+                Proportion of mentions sourced from each indexed community
+              </p>
+            </div>
+            <div class="flex items-center gap-4 text-xs font-mono">
+              <span class="inline-flex items-center gap-1.5 text-indigo-300">
+                <Icon name="lucide:message-square" class="w-3.5 h-3.5 text-indigo-400" />
+                <span>Discord: {{ perfume.sources.discord.mentionCount }} ({{ discordPct }}%)</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 text-orange-300">
+                <Icon name="lucide:message-circle" class="w-3.5 h-3.5 text-orange-400" />
+                <span>Reddit: {{ perfume.sources.reddit.mentionCount }} ({{ redditPct }}%)</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Minimalist Solid Bar Partition -->
+          <div class="w-full h-3 bg-[#0e0e11] border border-[#232328] flex overflow-hidden">
+            <div
+              v-if="perfume.sources.discord.mentionCount"
+              class="h-full bg-indigo-500/80 transition-all"
+              :style="{ width: `${discordPct}%` }"
+              :title="`Discord: ${perfume.sources.discord.mentionCount} mentions`"
+            />
+            <div
+              v-if="perfume.sources.reddit.mentionCount"
+              class="h-full bg-orange-500/80 transition-all"
+              :style="{ width: `${redditPct}%` }"
+              :title="`Reddit: ${perfume.sources.reddit.mentionCount} mentions`"
+            />
+          </div>
+        </section>
+
+        <!-- Yearly Heatmap Matrix -->
+        <section
+          v-if="perfume.yearlyMentions && sortedYears.length"
+          class="border border-[#232328] bg-[#151519] p-5"
+        >
+          <div class="mb-3">
+            <h2 class="text-xs font-semibold uppercase tracking-[0.15em] text-neutral-400">
+              Longitudinal Velocity Matrix (Yearly Volume)
+            </h2>
+            <p class="text-xs text-neutral-400 mt-0.5">
+              Historical mention distribution across archive years
+            </p>
+          </div>
+
+          <div class="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-12 border border-[#232328] divide-x divide-y sm:divide-y-0 divide-[#232328] bg-[#0e0e11]">
+            <div
+              v-for="year in sortedYears"
+              :key="year"
+              class="p-3 text-center"
+            >
+              <div class="text-[10px] font-mono text-neutral-400">{{ year }}</div>
+              <div class="font-mono text-base font-bold tabular-nums text-neutral-100 mt-1">
+                {{ perfume.yearlyMentions[year] || 0 }}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Reddit Olfactory Accord Distribution -->
+        <section
+          v-if="perfume.accordDistribution && sortedAccords.length"
+          class="border border-[#232328] bg-[#151519] p-5"
+        >
+          <div class="mb-4">
+            <h2 class="text-xs font-semibold uppercase tracking-[0.15em] text-neutral-400">
+              Olfactory Accord Concordance (Reddit r/fragrance)
+            </h2>
+            <p class="text-xs text-neutral-400 mt-0.5">
+              Accords and scent descriptors co-referenced with this fragrance
+            </p>
+          </div>
+
+          <div class="space-y-2 max-w-2xl">
+            <div
+              v-for="[accord, count] in sortedAccords"
+              :key="accord"
+              class="flex items-center gap-3 text-xs"
+            >
+              <span class="w-24 font-mono capitalize text-neutral-300 truncate">{{ accord }}</span>
+              <div class="flex-1 h-2 bg-[#0e0e11] border border-[#232328] overflow-hidden">
+                <div
+                  class="h-full bg-stone-400"
+                  :style="{ width: `${(count / maxAccordCount) * 100}%` }"
+                />
+              </div>
+              <span class="w-10 font-mono text-right tabular-nums text-neutral-400">{{ count }}</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Frequently Compared / Co-Mentions -->
+        <section v-if="perfume.coMentions.length" class="border border-[#232328] bg-[#151519] p-5">
+          <div class="mb-3">
+            <h2 class="text-xs font-semibold uppercase tracking-[0.15em] text-neutral-400">
+              Frequently Associated Formulations
+            </h2>
+            <p class="text-xs text-neutral-400 mt-0.5">
+              Fragrances co-cited within the same dialogue threads
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
             <NuxtLink
               v-for="co in perfume.coMentions"
               :key="co.name"
               :to="`/perfume/${slugify(co.name)}`"
-              class="co-mention-card glass-card"
+              class="p-3 border border-[#232328] bg-[#0e0e11] hover:bg-[#1b1b22] hover:border-neutral-500 transition-colors flex items-center justify-between no-underline text-inherit"
             >
-              <div class="co-mention-info">
-                <div class="co-mention-name">{{ co.name }}</div>
-              </div>
-              <div class="co-mention-count">{{ co.count }}×</div>
+              <span class="text-xs font-semibold text-neutral-200 truncate pr-2">{{ co.name }}</span>
+              <span class="font-mono text-[10px] text-neutral-400 tabular-nums shrink-0">{{ co.count }}×</span>
             </NuxtLink>
           </div>
-        </div>
+        </section>
 
-        <!-- Sample Community Quotes -->
-        <div v-if="perfume.sampleMentions.length" class="detail-section animate-fade-in-up" style="opacity: 0; animation-delay: 400ms">
-          <h2 class="section__title">💬 Community Quotes & Reviews</h2>
-          <p class="section__subtitle">Direct messages from members mentioning this fragrance</p>
-          <div class="sample-mentions">
+        <!-- Authentic Community Quotes & Reviews -->
+        <section v-if="perfume.sampleMentions.length" class="border border-[#232328] bg-[#151519] p-5">
+          <div class="mb-4">
+            <h2 class="text-xs font-semibold uppercase tracking-[0.15em] text-neutral-400">
+              Selected Community Evaluations & Quotes
+            </h2>
+            <p class="text-xs text-neutral-400 mt-0.5">
+              Direct verbatim commentary extracted from primary community archives
+            </p>
+          </div>
+
+          <div class="divide-y divide-[#232328] border border-[#232328] bg-[#0e0e11]">
             <div
               v-for="(mention, i) in perfume.sampleMentions"
               :key="i"
-              class="thread-message thread-message--keyword"
+              class="p-4 flex flex-col gap-2"
             >
-              <div class="thread-author">
-                {{ mention.author }}
-                <span class="thread-time">{{ formatDateTime(mention.timestamp) }}</span>
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-bold text-neutral-200">{{ mention.author }}</span>
+                  <span class="font-mono text-[11px] text-neutral-400">
+                    {{ formatDateTime(mention.timestamp) }}
+                  </span>
+                  <span
+                    class="text-[10px] font-mono uppercase px-2 py-0.5 border"
+                    :class="mention.source === 'reddit'
+                      ? 'border-orange-900/60 bg-orange-950/30 text-orange-300'
+                      : 'border-indigo-900/60 bg-indigo-950/30 text-indigo-300'"
+                  >
+                    {{ mention.source === 'reddit' ? 'r/fragrance' : 'Discord' }}
+                  </span>
+                </div>
+
+                <a
+                  v-if="mention.url"
+                  :href="mention.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1 text-[11px] font-mono text-orange-300 hover:text-orange-200 border border-orange-900/60 bg-orange-950/30 px-2 py-0.5 transition-colors"
+                  title="Open source comment on Reddit"
+                >
+                  <span>View on Reddit</span>
+                  <Icon name="lucide:external-link" class="w-3 h-3" />
+                </a>
               </div>
-              <div class="thread-content">"{{ mention.content }}"</div>
+
+              <blockquote class="text-xs sm:text-sm text-neutral-300 leading-relaxed italic pl-3 border-l border-neutral-700">
+                "{{ mention.content }}"
+              </blockquote>
             </div>
           </div>
-        </div>
+        </section>
 
-        <!-- Full Conversation Threads -->
-        <div class="detail-section animate-fade-in-up" style="opacity: 0; animation-delay: 500ms">
-          <h2 class="section__title">🧵 Full Conversation Threads</h2>
-          <p class="section__subtitle">
-            {{ relatedThreads.length }} discussion threads featuring "{{ perfume.name }}"
-            <span v-if="relatedThreads.length > visibleThreadCount" class="threads-showing">
-              — showing {{ visibleThreadCount }} of {{ relatedThreads.length }}
-            </span>
-          </p>
-          <div class="threads-list">
+        <!-- Full Contextual Conversation Threads -->
+        <section class="border border-[#232328] bg-[#151519] p-5">
+          <div class="mb-4 flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <h2 class="text-xs font-semibold uppercase tracking-[0.15em] text-neutral-400">
+                Archival Discussion Threads
+              </h2>
+              <p class="text-xs text-neutral-400 mt-0.5">
+                {{ relatedThreads.length }} indexed discussion contexts citing "{{ perfume.name }}"
+                <span v-if="relatedThreads.length > visibleThreadCount" class="font-mono text-neutral-400">
+                  (displaying {{ visibleThreadCount }} of {{ relatedThreads.length }})
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <div class="space-y-3">
             <ThreadViewer
               v-for="thread in relatedThreads.slice(0, visibleThreadCount)"
               :key="thread.keywordMessage.id"
@@ -156,359 +363,89 @@
               :keyword="meta?.keyword"
             />
           </div>
-          <button
-            v-if="relatedThreads.length > visibleThreadCount"
-            class="btn btn--ghost load-more-btn"
-            @click="visibleThreadCount += 10"
-          >
-            Load more threads...
-          </button>
-        </div>
-      </main>
-    </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="container">
-        <p class="footer__text">
-          Data extracted from <strong>Motion Ime</strong> Discord Perfumery Channel
-        </p>
-      </div>
-    </footer>
+          <div v-if="relatedThreads.length > visibleThreadCount" class="mt-4 text-center">
+            <button
+              type="button"
+              class="px-5 py-2.5 border border-[#232328] bg-[#0e0e11] hover:bg-[#1b1b22] hover:border-neutral-500 text-xs font-mono uppercase tracking-wider text-neutral-200 transition-colors"
+              @click="visibleThreadCount += 10"
+            >
+              Load Additional Threads (+10)
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <!-- Archival Print Catalog Footer -->
+      <footer class="mt-20 border-t border-[#232328] bg-[#0c0c0f] py-8 text-neutral-400 text-xs font-mono">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            Data: Motion Ime Discord + r/fragrance Reddit
+          </div>
+          <div>
+            RECORD SLUG: {{ slug }}
+          </div>
+        </div>
+      </footer>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { PerfumeEntry, ConversationThread } from '~/composables/usePerfumeData'
 import { slugify, formatDate, formatDateTime, getRegionFlag } from '~/composables/usePerfumeData'
 
 const route = useRoute()
 const slug = route.params.slug as string
 
-const {
-  loading,
-  meta,
-  fetchData,
-  getPerfumeBySlug,
-  getThreadsForPerfume,
-} = usePerfumeData()
+interface PerfumeDetailResponse {
+  perfume: PerfumeEntry | null
+  threads: ConversationThread[]
+}
+
+const { data: detailData, pending: loading, error } = await useFetch<PerfumeDetailResponse>(`/api/perfumes/${slug}`)
 
 const visibleThreadCount = ref(10)
 
-await fetchData()
+const perfume = computed(() => detailData.value?.perfume || null)
+const relatedThreads = computed(() => detailData.value?.threads || [])
 
-const perfume = computed(() => getPerfumeBySlug(slug))
+// Source breakdown percentages
+const discordPct = computed(() => {
+  if (!perfume.value?.sources) return 0
+  const total = perfume.value.sources.discord.mentionCount + perfume.value.sources.reddit.mentionCount
+  return total > 0 ? Math.round((perfume.value.sources.discord.mentionCount / total) * 100) : 0
+})
 
-const relatedThreads = computed(() => {
-  if (!perfume.value) return []
-  return getThreadsForPerfume(perfume.value.name)
+const redditPct = computed(() => {
+  if (!perfume.value?.sources) return 0
+  return 100 - discordPct.value
+})
+
+// Yearly heatmap
+const sortedYears = computed(() => {
+  if (!perfume.value?.yearlyMentions) return []
+  return Object.keys(perfume.value.yearlyMentions).sort()
+})
+
+// Accord distribution
+const sortedAccords = computed<[string, number][]>(() => {
+  if (!perfume.value?.accordDistribution) return []
+  return Object.entries(perfume.value.accordDistribution)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 15)
+})
+
+const maxAccordCount = computed(() => {
+  if (!sortedAccords.value.length) return 1
+  return sortedAccords.value[0][1]
 })
 
 useHead({
   title: computed(() =>
     perfume.value
-      ? `${perfume.value.name} (${perfume.value.brand}) — Perfumery Leaderboard`
-      : 'Perfume Not Found'
+      ? `${perfume.value.name} (${perfume.value.brand}) — Community Spec Sheet`
+      : 'Perfume Not Found — Perfumery Leaderboard'
   ),
 })
 </script>
-
-<style scoped>
-.detail-hero {
-  padding: var(--space-12) 0 var(--space-10);
-  border-bottom: 1px solid var(--border-subtle);
-  margin-bottom: var(--space-10);
-}
-
-.back-link {
-  display: inline-block;
-  font-size: var(--text-sm);
-  color: var(--text-tertiary);
-  margin-bottom: var(--space-6);
-  transition: color var(--transition-fast);
-}
-
-.back-link:hover {
-  color: var(--accent-gold);
-}
-
-.detail-hero__content {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-8);
-}
-
-.rank-medal--lg {
-  width: 64px;
-  height: 64px;
-  font-size: var(--text-xl);
-  margin-top: var(--space-2);
-}
-
-.detail-hero__meta-badges {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin-bottom: var(--space-2);
-  flex-wrap: wrap;
-}
-
-.region-badge {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--text-secondary);
-  background: var(--bg-tertiary);
-  padding: 3px 10px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--border-subtle);
-}
-
-.category-badge {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--accent-lavender);
-  background: var(--accent-lavender-dim);
-  padding: 3px 10px;
-  border-radius: var(--radius-full);
-  border: 1px solid rgba(167, 139, 250, 0.2);
-}
-
-.category-badge--local {
-  color: var(--accent-gold);
-  background: var(--accent-gold-dim);
-  border-color: rgba(212, 168, 83, 0.3);
-}
-
-.gender-badge {
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  background: var(--bg-secondary);
-  padding: 3px 8px;
-  border-radius: var(--radius-full);
-}
-
-.detail-hero__brand {
-  font-size: var(--text-sm);
-  color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 600;
-  margin-bottom: var(--space-1);
-}
-
-.detail-hero__name {
-  font-size: var(--text-4xl);
-  font-weight: 800;
-  margin-bottom: var(--space-3);
-  line-height: 1.2;
-}
-
-.detail-hero__desc {
-  font-size: var(--text-base);
-  color: var(--text-secondary);
-  max-width: 680px;
-  line-height: 1.6;
-  margin-bottom: var(--space-4);
-}
-
-.detail-hero__notes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-/* Stats */
-.detail-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-4);
-  margin-bottom: var(--space-10);
-}
-
-.detail-stat-card {
-  background: var(--gradient-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: var(--space-5);
-  text-align: center;
-}
-
-/* Sections */
-.detail-section {
-  margin-bottom: var(--space-12);
-}
-
-.section__title {
-  font-size: var(--text-xl);
-  font-weight: 700;
-  margin-bottom: var(--space-2);
-}
-
-.section__subtitle {
-  font-size: var(--text-sm);
-  color: var(--text-tertiary);
-  margin-bottom: var(--space-6);
-}
-
-/* Timeline */
-.timeline-bar {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-4);
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-subtle);
-}
-
-.timeline-date {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-  white-space: nowrap;
-}
-
-.timeline-line {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 0;
-}
-
-.timeline-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent-gold);
-  flex-shrink: 0;
-  box-shadow: 0 0 8px rgba(212, 168, 83, 0.4);
-}
-
-.timeline-connector {
-  flex: 1;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent-gold), var(--accent-lavender));
-  opacity: 0.4;
-}
-
-/* Co-Mentions */
-.co-mentions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: var(--space-3);
-}
-
-.co-mention-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-4);
-  text-decoration: none;
-  color: inherit;
-}
-
-.co-mention-name {
-  font-weight: 600;
-  font-size: var(--text-sm);
-  color: var(--text-primary);
-}
-
-.co-mention-count {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--text-sm);
-  color: var(--accent-gold);
-}
-
-/* Sample Mentions */
-.sample-mentions {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-/* Threads */
-.threads-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.threads-showing {
-  color: var(--text-muted);
-}
-
-.load-more-btn {
-  width: 100%;
-  justify-content: center;
-  margin-top: var(--space-4);
-  padding: var(--space-3);
-}
-
-/* Not Found */
-.not-found {
-  text-align: center;
-  padding: var(--space-24) 0;
-}
-
-.not-found h1 {
-  font-size: var(--text-3xl);
-  margin-bottom: var(--space-4);
-}
-
-.not-found p {
-  color: var(--text-secondary);
-  margin-bottom: var(--space-8);
-}
-
-/* Footer */
-.footer {
-  padding: var(--space-12) 0;
-  border-top: 1px solid var(--border-subtle);
-  margin-top: var(--space-16);
-}
-
-.footer__text {
-  text-align: center;
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-}
-
-/* Loading */
-.loading-state {
-  text-align: center;
-  padding: var(--space-24) 0;
-  color: var(--text-tertiary);
-}
-
-.loading-spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid var(--border-subtle);
-  border-top-color: var(--accent-gold);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto var(--space-4);
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .detail-hero__content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-4);
-  }
-
-  .detail-hero__name {
-    font-size: var(--text-2xl);
-  }
-
-  .detail-stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-</style>

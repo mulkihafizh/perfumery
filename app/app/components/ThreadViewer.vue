@@ -1,104 +1,153 @@
 <template>
-  <div class="thread-viewer">
-    <div class="thread-viewer__header" @click="isExpanded = !isExpanded">
-      <div class="thread-viewer__preview">
-        <span class="thread-viewer__author">{{ thread.keywordMessage.author }}</span>
-        <span class="thread-viewer__time">{{ formatDateTime(thread.keywordMessage.timestamp) }}</span>
+  <div class="border border-[#232328] bg-[#151519] transition-colors">
+    <!-- Header Summary Row -->
+    <div
+      class="p-4 cursor-pointer hover:bg-[#1b1b22] transition-colors select-none"
+      @click="isExpanded = !isExpanded"
+    >
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="text-xs font-bold text-neutral-200">
+            {{ thread.keywordMessage.author }}
+          </span>
+          <span class="font-mono text-[11px] text-neutral-400">
+            {{ formatDateTime(thread.keywordMessage.timestamp) }}
+          </span>
+
+          <span
+            v-if="thread.source === 'reddit'"
+            class="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 border border-orange-900/60 bg-orange-950/30 text-orange-300"
+          >
+            <Icon name="lucide:message-circle" class="w-3 h-3 text-orange-400" />
+            <span>r/fragrance</span>
+          </span>
+
+          <a
+            v-if="thread.url"
+            :href="thread.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 border border-orange-800/80 bg-orange-950/50 text-orange-200 hover:bg-orange-900/70 transition-colors"
+            title="Open original thread on Reddit"
+            @click.stop
+          >
+            <span>Open on Reddit</span>
+            <Icon name="lucide:external-link" class="w-3 h-3" />
+          </a>
+        </div>
+
+        <div class="flex items-center gap-2 text-[10px] font-mono text-neutral-400">
+          <span v-if="thread.parentChain.length" class="px-1.5 py-0.5 border border-[#232328] bg-[#0e0e11]">
+            ↑ {{ thread.parentChain.length }} parent{{ thread.parentChain.length > 1 ? 's' : '' }}
+          </span>
+          <span v-if="thread.replies.length" class="px-1.5 py-0.5 border border-[#232328] bg-[#0e0e11]">
+            ↓ {{ thread.replies.length }} repl{{ thread.replies.length > 1 ? 'ies' : 'y' }}
+          </span>
+          <span class="px-1.5 py-0.5 border border-[#232328] bg-[#0e0e11]">
+            {{ thread.contextBefore.length + thread.contextAfter.length }} context
+          </span>
+          <Icon
+            :name="isExpanded ? 'lucide:chevron-up' : 'lucide:chevron-down'"
+            class="w-4 h-4 text-neutral-400"
+          />
+        </div>
       </div>
-      <p class="thread-viewer__snippet">{{ thread.keywordMessage.content.substring(0, 120) }}{{ thread.keywordMessage.content.length > 120 ? '...' : '' }}</p>
-      <div class="thread-viewer__meta">
-        <span v-if="thread.parentChain.length" class="thread-viewer__badge">
-          ↑ {{ thread.parentChain.length }} parent{{ thread.parentChain.length > 1 ? 's' : '' }}
-        </span>
-        <span v-if="thread.replies.length" class="thread-viewer__badge">
-          ↓ {{ thread.replies.length }} repl{{ thread.replies.length > 1 ? 'ies' : 'y' }}
-        </span>
-        <span class="thread-viewer__badge thread-viewer__badge--context">
-          {{ thread.contextBefore.length + thread.contextAfter.length }} context
-        </span>
-        <span class="thread-viewer__toggle">{{ isExpanded ? '▲' : '▼' }}</span>
-      </div>
+
+      <!-- Preview Snippet -->
+      <p class="text-xs text-neutral-400 line-clamp-2 leading-relaxed font-sans">
+        {{ thread.keywordMessage.content }}
+      </p>
     </div>
 
-    <Transition name="expand">
-      <div v-if="isExpanded" class="thread-viewer__body">
-        <!-- Context Before -->
-        <div v-if="thread.contextBefore.length" class="thread-viewer__section">
-          <div class="thread-viewer__section-label">Context Before</div>
-          <div
-            v-for="msg in thread.contextBefore"
-            :key="msg.id"
-            class="thread-message thread-message--context"
-          >
-            <div class="thread-author">
-              {{ msg.author }}
-              <span class="thread-time">{{ formatTime(msg.timestamp) }}</span>
-            </div>
-            <div class="thread-content" v-html="highlightKeyword(msg.content)" />
-          </div>
+    <!-- Expanded Body: Archival Ledger -->
+    <div v-if="isExpanded" class="border-t border-[#232328] p-4 bg-[#121216] flex flex-col gap-4">
+      <!-- Context Before -->
+      <div v-if="thread.contextBefore.length" class="flex flex-col gap-2">
+        <div class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400">
+          Preceding Context
         </div>
-
-        <!-- Parent Chain -->
-        <div v-if="thread.parentChain.length" class="thread-viewer__section">
-          <div class="thread-viewer__section-label">↑ Reply Chain</div>
-          <div
-            v-for="msg in thread.parentChain"
-            :key="msg.id"
-            class="thread-message thread-message--reply"
-          >
-            <div class="thread-author">
-              {{ msg.author }}
-              <span class="thread-time">{{ formatTime(msg.timestamp) }}</span>
-            </div>
-            <div class="thread-content" v-html="highlightKeyword(msg.content)" />
+        <div
+          v-for="msg in thread.contextBefore"
+          :key="msg.id"
+          class="p-3 border border-[#232328] bg-[#151519] text-xs text-neutral-400"
+        >
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-medium text-neutral-300">{{ msg.author }}</span>
+            <span class="font-mono text-[10px] text-neutral-400">{{ formatTime(msg.timestamp) }}</span>
           </div>
-        </div>
-
-        <!-- Keyword Message -->
-        <div class="thread-viewer__section">
-          <div class="thread-viewer__section-label">★ Keyword Hit</div>
-          <div class="thread-message thread-message--keyword">
-            <div class="thread-author">
-              {{ thread.keywordMessage.author }}
-              <span class="thread-time">{{ formatTime(thread.keywordMessage.timestamp) }}</span>
-            </div>
-            <div class="thread-content" v-html="highlightKeyword(thread.keywordMessage.content)" />
-          </div>
-        </div>
-
-        <!-- Replies -->
-        <div v-if="thread.replies.length" class="thread-viewer__section">
-          <div class="thread-viewer__section-label">↓ Replies</div>
-          <div
-            v-for="msg in thread.replies"
-            :key="msg.id"
-            class="thread-message thread-message--reply"
-          >
-            <div class="thread-author">
-              {{ msg.author }}
-              <span class="thread-time">{{ formatTime(msg.timestamp) }}</span>
-            </div>
-            <div class="thread-content" v-html="highlightKeyword(msg.content)" />
-          </div>
-        </div>
-
-        <!-- Context After -->
-        <div v-if="thread.contextAfter.length" class="thread-viewer__section">
-          <div class="thread-viewer__section-label">Context After</div>
-          <div
-            v-for="msg in thread.contextAfter"
-            :key="msg.id"
-            class="thread-message thread-message--context"
-          >
-            <div class="thread-author">
-              {{ msg.author }}
-              <span class="thread-time">{{ formatTime(msg.timestamp) }}</span>
-            </div>
-            <div class="thread-content" v-html="highlightKeyword(msg.content)" />
-          </div>
+          <div class="leading-relaxed" v-html="highlightKeyword(msg.content)" />
         </div>
       </div>
-    </Transition>
+
+      <!-- Parent Chain -->
+      <div v-if="thread.parentChain.length" class="flex flex-col gap-2">
+        <div class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400">
+          ↑ Parent Reply Chain
+        </div>
+        <div
+          v-for="msg in thread.parentChain"
+          :key="msg.id"
+          class="p-3 border-l-2 border-l-neutral-600 border-y border-r border-[#232328] bg-[#151519] text-xs text-neutral-300"
+        >
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-medium text-neutral-200">{{ msg.author }}</span>
+            <span class="font-mono text-[10px] text-neutral-400">{{ formatTime(msg.timestamp) }}</span>
+          </div>
+          <div class="leading-relaxed" v-html="highlightKeyword(msg.content)" />
+        </div>
+      </div>
+
+      <!-- Keyword Anchor Message -->
+      <div class="flex flex-col gap-2">
+        <div class="text-[10px] font-semibold uppercase tracking-[0.15em] text-amber-400 flex items-center gap-1">
+          <Icon name="lucide:crosshair" class="w-3 h-3" />
+          <span>Keyword Hit Message</span>
+        </div>
+        <div class="p-3.5 border border-amber-900/50 bg-amber-950/20 text-xs text-neutral-100">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="font-bold text-amber-200">{{ thread.keywordMessage.author }}</span>
+            <span class="font-mono text-[10px] text-amber-300/70">{{ formatTime(thread.keywordMessage.timestamp) }}</span>
+          </div>
+          <div class="leading-relaxed" v-html="highlightKeyword(thread.keywordMessage.content)" />
+        </div>
+      </div>
+
+      <!-- Replies -->
+      <div v-if="thread.replies.length" class="flex flex-col gap-2">
+        <div class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400">
+          ↓ Direct Responses
+        </div>
+        <div
+          v-for="msg in thread.replies"
+          :key="msg.id"
+          class="p-3 border-l-2 border-l-neutral-600 border-y border-r border-[#232328] bg-[#151519] text-xs text-neutral-300"
+        >
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-medium text-neutral-200">{{ msg.author }}</span>
+            <span class="font-mono text-[10px] text-neutral-400">{{ formatTime(msg.timestamp) }}</span>
+          </div>
+          <div class="leading-relaxed" v-html="highlightKeyword(msg.content)" />
+        </div>
+      </div>
+
+      <!-- Context After -->
+      <div v-if="thread.contextAfter.length" class="flex flex-col gap-2">
+        <div class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400">
+          Subsequent Context
+        </div>
+        <div
+          v-for="msg in thread.contextAfter"
+          :key="msg.id"
+          class="p-3 border border-[#232328] bg-[#151519] text-xs text-neutral-400"
+        >
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-medium text-neutral-300">{{ msg.author }}</span>
+            <span class="font-mono text-[10px] text-neutral-400">{{ formatTime(msg.timestamp) }}</span>
+          </div>
+          <div class="leading-relaxed" v-html="highlightKeyword(msg.content)" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -135,130 +184,3 @@ function escapeHtml(text: string): string {
     .replace(/"/g, '&quot;')
 }
 </script>
-
-<style scoped>
-.thread-viewer {
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: var(--bg-card);
-  transition: all var(--transition-base);
-}
-
-.thread-viewer:hover {
-  border-color: var(--border-medium);
-}
-
-.thread-viewer__header {
-  padding: var(--space-4);
-  cursor: pointer;
-  transition: background var(--transition-fast);
-}
-
-.thread-viewer__header:hover {
-  background: var(--bg-card-hover);
-}
-
-.thread-viewer__preview {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin-bottom: var(--space-2);
-}
-
-.thread-viewer__author {
-  font-weight: 600;
-  font-size: var(--text-sm);
-  color: var(--accent-lavender);
-}
-
-.thread-viewer__time {
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
-}
-
-.thread-viewer__snippet {
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin-bottom: var(--space-2);
-}
-
-.thread-viewer__meta {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-}
-
-.thread-viewer__badge {
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
-  background: var(--bg-tertiary);
-  padding: 2px var(--space-2);
-  border-radius: var(--radius-full);
-}
-
-.thread-viewer__badge--context {
-  color: var(--text-muted);
-}
-
-.thread-viewer__toggle {
-  margin-left: auto;
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-}
-
-.thread-viewer__body {
-  border-top: 1px solid var(--border-subtle);
-  padding: var(--space-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.thread-viewer__section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.thread-viewer__section-label {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  padding-bottom: var(--space-1);
-}
-
-/* Expand transition */
-.expand-enter-active,
-.expand-leave-active {
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
-
-.expand-enter-from,
-.expand-leave-to {
-  opacity: 0;
-  max-height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.expand-enter-to,
-.expand-leave-from {
-  opacity: 1;
-  max-height: 2000px;
-}
-
-/* Keyword highlighting */
-:deep(.highlight) {
-  background: var(--accent-gold-dim);
-  color: var(--accent-gold);
-  padding: 1px 3px;
-  border-radius: 3px;
-  font-weight: 600;
-}
-</style>

@@ -1,103 +1,130 @@
 <template>
-  <div class="search-wrapper">
+  <div class="mb-6 p-4 sm:p-5 bg-[#151519] border border-[#232328] flex flex-col gap-4">
     <!-- Top Search & Quick Controls -->
-    <div class="search-top-bar">
-      <div class="search-container">
-        <svg
-          class="search-icon"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.3-4.3" />
-        </svg>
+    <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+      <!-- Search Input Container -->
+      <div class="relative flex-1">
+        <Icon
+          name="lucide:search"
+          class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 pointer-events-none"
+        />
         <input
           id="perfume-search"
           v-model="query"
           type="text"
-          class="search-input"
-          :placeholder="placeholder || 'Search by perfume line (e.g. Hawas, MYSLF, Ostara, Sauvage), brand, or note...'"
+          class="w-full bg-[#0e0e11] border border-[#232328] hover:border-neutral-700 focus:border-neutral-400 focus:outline-none text-neutral-100 placeholder-neutral-500 text-sm pl-10 pr-9 py-2.5 transition-colors font-sans"
+          :placeholder="placeholder || 'Search catalogue by line (Hawas, MYSLF), brand, or accord...'"
           @input="emitChanges"
         />
         <button
           v-if="query"
-          class="search-clear"
+          class="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-neutral-400 hover:text-neutral-100 transition-colors"
           aria-label="Clear search"
           @click="clearSearch"
         >
-          ✕
+          <Icon name="lucide:x" class="w-4 h-4" />
         </button>
       </div>
 
       <!-- Quick Local Brand Toggle -->
       <button
-        class="local-toggle-btn"
-        :class="{ 'local-toggle-btn--active': localOnly }"
+        type="button"
+        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 border text-xs font-semibold uppercase tracking-wider transition-colors whitespace-nowrap"
+        :class="localOnly
+          ? 'bg-stone-800 text-stone-100 border-stone-600'
+          : 'bg-[#0e0e11] text-neutral-400 border-[#232328] hover:border-neutral-600 hover:text-neutral-200'"
         @click="toggleLocalOnly"
       >
-        <span class="local-toggle-icon">🇮🇩</span>
-        <span class="local-toggle-text">Local Brands Only</span>
-        <span class="local-toggle-indicator" />
+        <span class="text-sm">🇮🇩</span>
+        <span>Local Ateliers</span>
+        <span
+          class="w-1.5 h-1.5 rounded-full"
+          :class="localOnly ? 'bg-amber-400' : 'bg-neutral-600'"
+        />
       </button>
     </div>
 
     <!-- Region / Origin Filter Pills -->
-    <div class="filter-section">
-      <div class="filter-section-title">🌍 Origin / Region:</div>
-      <div class="filter-pills filter-pills--regions">
+    <div class="flex flex-col gap-1.5">
+      <div class="flex items-center justify-between">
+        <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400">
+          Geographic Provenance
+        </span>
+        <span v-if="selectedRegion !== 'ALL'" class="font-mono text-[10px] text-neutral-400">
+          FILTER: {{ selectedRegion }}
+        </span>
+      </div>
+
+      <div class="flex flex-wrap gap-1.5">
         <button
-          class="btn"
-          :class="selectedRegion === 'ALL' && !localOnly ? 'btn--active' : 'btn--ghost'"
+          type="button"
+          class="px-2.5 py-1 text-xs border transition-colors flex items-center gap-1.5"
+          :class="selectedRegion === 'ALL' && !localOnly
+            ? 'bg-neutral-100 text-neutral-900 border-neutral-100 font-semibold'
+            : 'bg-[#0e0e11] text-neutral-400 border-[#232328] hover:border-neutral-600 hover:text-neutral-200'"
           @click="setRegion('ALL')"
         >
-          🌐 All Regions
+          <Icon name="lucide:globe" class="w-3.5 h-3.5" />
+          <span>All Provenances</span>
         </button>
+
         <button
           v-for="reg in availableRegions"
           :key="reg.id"
-          class="btn"
-          :class="selectedRegion === reg.id ? 'btn--active' : 'btn--ghost'"
+          type="button"
+          class="px-2.5 py-1 text-xs border transition-colors flex items-center gap-1.5"
+          :class="selectedRegion === reg.id
+            ? 'bg-neutral-100 text-neutral-900 border-neutral-100 font-semibold'
+            : 'bg-[#0e0e11] text-neutral-400 border-[#232328] hover:border-neutral-600 hover:text-neutral-200'"
           @click="setRegion(reg.id)"
         >
-          {{ reg.flag }} {{ reg.label }}
+          <span>{{ reg.flag }}</span>
+          <span>{{ reg.label }}</span>
         </button>
       </div>
     </div>
 
-    <!-- Note Filter Pills -->
-    <div class="filter-section">
-      <div class="filter-section-header">
-        <div class="filter-section-title">🌸 Scent Notes:</div>
+    <!-- Scent Note Accord Filters -->
+    <div class="flex flex-col gap-1.5 pt-2 border-t border-[#232328]">
+      <div class="flex items-center justify-between">
+        <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400">
+          Olfactory Profile / Accords
+        </span>
         <button
           v-if="selectedNotes.length > 0"
-          class="clear-notes-btn"
+          type="button"
+          class="text-[10px] font-semibold uppercase tracking-wider text-rose-400 hover:text-rose-300 transition-colors flex items-center gap-1"
           @click="clearNotes"
         >
-          Clear notes ({{ selectedNotes.length }}) ✕
+          <span>Clear accords ({{ selectedNotes.length }})</span>
+          <Icon name="lucide:x" class="w-3 h-3" />
         </button>
       </div>
-      <div class="filter-pills filter-pills--notes">
+
+      <div class="flex flex-wrap gap-1.5">
         <button
-          class="btn btn--sm"
-          :class="selectedNotes.length === 0 ? 'btn--active' : 'btn--ghost'"
+          type="button"
+          class="px-2.5 py-1 text-xs border transition-colors"
+          :class="selectedNotes.length === 0
+            ? 'bg-neutral-100 text-neutral-900 border-neutral-100 font-semibold'
+            : 'bg-[#0e0e11] text-neutral-400 border-[#232328] hover:border-neutral-600 hover:text-neutral-200'"
           @click="clearNotes"
         >
-          ✨ All Notes
+          All Accords
         </button>
+
         <button
           v-for="note in availableNotes"
           :key="note"
-          class="btn btn--sm"
-          :class="selectedNotes.includes(note) ? 'btn--active btn--active-rose' : 'btn--ghost'"
+          type="button"
+          class="px-2.5 py-1 text-xs border transition-colors capitalize flex items-center gap-1.5"
+          :class="selectedNotes.includes(note)
+            ? 'bg-stone-800 text-stone-100 border-stone-600 font-semibold'
+            : 'bg-[#0e0e11] text-neutral-400 border-[#232328] hover:border-neutral-600 hover:text-neutral-200'"
           @click="toggleNote(note)"
         >
-          {{ noteIcons[note] || '🏷️' }} {{ note }}
+          <Icon :name="getNoteIcon(note)" class="w-3 h-3 opacity-80" />
+          <span>{{ note }}</span>
         </button>
       </div>
     </div>
@@ -126,48 +153,62 @@ const localOnly = ref(props.initialLocalOnly || false)
 const selectedNotes = ref<string[]>(props.initialNotes || [])
 
 const availableRegions = [
-  { id: 'Indonesia', label: 'Indonesia (Local)', flag: '🇮🇩' },
-  { id: 'Middle East', label: 'Middle East / Arabian', flag: '🇦🇪' },
-  { id: 'France', label: 'France Designer', flag: '🇫🇷' },
-  { id: 'Italy', label: 'Italy Designer', flag: '🇮🇹' },
+  { id: 'Indonesia', label: 'Indonesia', flag: '🇮🇩' },
+  { id: 'Middle East', label: 'Middle East', flag: '🇦🇪' },
+  { id: 'France', label: 'France', flag: '🇫🇷' },
+  { id: 'Italy', label: 'Italy', flag: '🇮🇹' },
   { id: 'Niche Houses', label: 'Niche Houses', flag: '👑' },
   { id: 'United States', label: 'United States', flag: '🇺🇸' },
-  { id: 'Europe', label: 'Europe (Other)', flag: '🇪🇺' },
+  { id: 'Europe', label: 'Europe', flag: '🇪🇺' },
 ]
 
 const availableNotes = [
+  'woody',
   'floral',
   'fresh',
-  'woody',
+  'citrus',
   'sweet',
-  'fruity',
-  'powdery',
-  'aromatic',
+  'vanilla',
   'spicy',
-  'oriental',
-  'leather',
+  'aromatic',
   'aquatic',
+  'powdery',
+  'fruity',
+  'leather',
+  'oriental',
 ]
 
-const noteIcons: Record<string, string> = {
-  floral: '🌸',
-  fresh: '💧',
-  woody: '🪵',
-  sweet: '🍬',
-  spicy: '🌶️',
-  powdery: '✨',
-  fruity: '🍊',
-  aromatic: '🌿',
-  oriental: '🏺',
-  leather: '🧥',
-  aquatic: '🌊',
+const noteIconMap: Record<string, string> = {
+  woody: 'lucide:tree-pine',
+  floral: 'lucide:flower-2',
+  fresh: 'lucide:leaf',
+  citrus: 'lucide:sun-medium',
+  sweet: 'lucide:cookie',
+  vanilla: 'lucide:sparkles',
+  spicy: 'lucide:flame',
+  aromatic: 'lucide:sparkle',
+  aquatic: 'lucide:droplets',
+  powdery: 'lucide:wind',
+  fruity: 'lucide:apple',
+  leather: 'lucide:shield',
+  oriental: 'lucide:compass',
 }
 
+function getNoteIcon(note: string): string {
+  return noteIconMap[note.toLowerCase()] || 'lucide:tag'
+}
+
+let searchDebounceTimer: any = null
+
 function emitChanges() {
-  emit('search', query.value)
+  clearTimeout(searchDebounceTimer)
+  searchDebounceTimer = setTimeout(() => {
+    emit('search', query.value)
+  }, 250)
 }
 
 function clearSearch() {
+  clearTimeout(searchDebounceTimer)
   query.value = ''
   emit('search', '')
 }
@@ -226,170 +267,3 @@ defineExpose({
   },
 })
 </script>
-
-<style scoped>
-.search-wrapper {
-  margin-bottom: var(--space-8);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  background: var(--bg-card);
-  padding: var(--space-5);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-subtle);
-  backdrop-filter: blur(12px);
-}
-
-.search-top-bar {
-  display: flex;
-  gap: var(--space-3);
-  align-items: center;
-}
-
-.search-container {
-  position: relative;
-  flex: 1;
-}
-
-.search-icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-muted);
-  pointer-events: none;
-}
-
-.search-clear {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: var(--text-tertiary);
-  cursor: pointer;
-  font-size: var(--text-sm);
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-sm);
-  transition: all var(--transition-fast);
-}
-
-.search-clear:hover {
-  color: var(--text-primary);
-  background: var(--bg-tertiary);
-}
-
-/* Local Brand Quick Toggle */
-.local-toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-4);
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  color: var(--text-secondary);
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-base);
-  white-space: nowrap;
-  user-select: none;
-}
-
-.local-toggle-btn:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-medium);
-  color: var(--text-primary);
-}
-
-.local-toggle-btn--active {
-  background: rgba(212, 168, 83, 0.15);
-  border-color: var(--accent-gold);
-  color: var(--accent-gold);
-  box-shadow: 0 0 12px rgba(212, 168, 83, 0.2);
-}
-
-.local-toggle-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  transition: all var(--transition-fast);
-}
-
-.local-toggle-btn--active .local-toggle-indicator {
-  background: var(--accent-gold);
-  box-shadow: 0 0 6px var(--accent-gold);
-}
-
-/* Filter Sections */
-.filter-section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.filter-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.filter-section-title {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.clear-notes-btn {
-  background: none;
-  border: none;
-  font-size: var(--text-xs);
-  color: var(--accent-rose);
-  cursor: pointer;
-  padding: 2px 6px;
-  border-radius: var(--radius-sm);
-  transition: all var(--transition-fast);
-}
-
-.clear-notes-btn:hover {
-  background: rgba(244, 114, 182, 0.1);
-}
-
-.filter-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.btn--sm {
-  padding: var(--space-1) var(--space-3);
-  font-size: var(--text-xs);
-}
-
-.btn--active-rose {
-  background: rgba(244, 114, 182, 0.15) !important;
-  color: var(--accent-rose) !important;
-  border-color: var(--accent-rose) !important;
-  box-shadow: 0 0 10px rgba(244, 114, 182, 0.25);
-}
-
-@media (max-width: 768px) {
-  .search-top-bar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .filter-pills {
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    padding-bottom: var(--space-2);
-    -webkit-overflow-scrolling: touch;
-  }
-}
-</style>

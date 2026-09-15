@@ -7,9 +7,22 @@
     "dev": "npm --prefix app run dev",
     "build": "npm --prefix app run build",
     "generate": "npm --prefix app run generate",
-    "pipeline": "node main.js floral && node scripts/build-leaderboard.js"
+    "catalog:generate": "node scripts/generate_catalog.js",
+    "catalog:sync:sociolla": "python sync_sociolla_to_catalog.py",
+    "build:global": "node scripts/build-global-leaderboard.js",
+    "build:floral": "node main.js floral && node scripts/build-leaderboard.js",
+    "reddit:fetch": "python scripts/fetch_reddit_comments.py",
+    "reddit:extract": "python scripts/reddit_extractor.py",
+    "reddit:verify": "python scripts/verify_reddit_pipeline.py",
+    "build:unified": "node scripts/build-unified-leaderboard.js",
+    "db:build": "node scripts/build-sqlite-db.js",
+    "pipeline:run": "node scripts/run-parallel-pipeline.js",
+    "build:all": "npm run pipeline:run"
   },
   "dependencies": {
     "stream-json": "^3.5.0"
+  },
+  "engines": {
+    "node": ">=22.5.0"
   }
 }

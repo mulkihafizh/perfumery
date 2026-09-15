@@ -1,14 +1,22 @@
 <template>
-  <div class="stats-overview">
+  <div class="grid grid-cols-2 lg:grid-cols-4 border border-[#232328] bg-[#151519] divide-y lg:divide-y-0 lg:divide-x divide-[#232328] mb-8">
     <div
-      v-for="(stat, index) in stats"
+      v-for="(stat, idx) in stats"
       :key="stat.label"
-      class="stat-card animate-fade-in-up"
-      :class="`delay-${index + 1}`"
-      :style="{ opacity: 0 }"
+      class="p-4 sm:p-5 flex flex-col justify-between hover:bg-[#1b1b22] transition-colors"
     >
-      <div class="stat-number">{{ stat.value }}</div>
-      <div class="stat-label">{{ stat.label }}</div>
+      <div class="flex items-center justify-between">
+        <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400">
+          {{ stat.label }}
+        </span>
+        <span class="font-mono text-[10px] text-neutral-600">0{{ idx + 1 }}</span>
+      </div>
+      <div class="font-mono text-2xl sm:text-3xl font-bold tabular-nums text-neutral-100 tracking-tight mt-2">
+        {{ stat.value }}
+      </div>
+      <div class="text-[11px] text-neutral-400 mt-1">
+        {{ stat.subtext }}
+      </div>
     </div>
   </div>
 </template>
@@ -22,31 +30,25 @@ const props = defineProps<{
 }>()
 
 const stats = computed(() => [
-  { value: props.totalMessages.toLocaleString(), label: 'Messages Scanned' },
-  { value: props.totalPerfumes.toLocaleString(), label: 'Perfumes Ranked' },
-  { value: props.totalThreads.toLocaleString(), label: 'Threads Analyzed' },
-  { value: `"${props.keyword}"`, label: 'Keyword Filter' },
+  {
+    value: props.totalMessages.toLocaleString(),
+    label: 'Messages Scanned',
+    subtext: 'Community corpus archive',
+  },
+  {
+    value: props.totalPerfumes.toLocaleString(),
+    label: 'Perfumes Ranked',
+    subtext: 'Catalogued products',
+  },
+  {
+    value: props.totalThreads.toLocaleString(),
+    label: 'Threads Analyzed',
+    subtext: 'Contextual discussions',
+  },
+  {
+    value: `"${props.keyword}"`,
+    label: 'Keyword Anchor',
+    subtext: 'Primary query filter',
+  },
 ])
 </script>
-
-<style scoped>
-.stats-overview {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-4);
-  margin-bottom: var(--space-10);
-}
-
-@media (max-width: 768px) {
-  .stats-overview {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-3);
-  }
-}
-
-@media (max-width: 480px) {
-  .stats-overview {
-    grid-template-columns: 1fr;
-  }
-}
-</style>

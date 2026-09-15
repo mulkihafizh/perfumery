@@ -2,6 +2,18 @@ import type { Ref } from 'vue'
 
 // ─── Types ──────────────────────────────────────────────────────────
 
+export interface SourceBreakdown {
+  discord: {
+    mentionCount: number
+    threadCount: number
+    uniqueAuthors: number
+  }
+  reddit: {
+    mentionCount: number
+    yearlyBreakdown: Record<string, number>
+  }
+}
+
 export interface PerfumeEntry {
   rank: number
   name: string
@@ -22,6 +34,9 @@ export interface PerfumeEntry {
     author: string
     content: string
     timestamp: string
+    source?: 'discord' | 'reddit'
+    url?: string
+    score?: number
   }>
   coMentions: Array<{
     name: string
@@ -29,6 +44,9 @@ export interface PerfumeEntry {
   }>
   firstMentioned: string
   lastMentioned: string
+  sources?: SourceBreakdown
+  accordDistribution?: Record<string, number>
+  yearlyMentions?: Record<string, number>
 }
 
 export interface ThreadMessage {
@@ -44,6 +62,8 @@ export interface ThreadMessage {
 }
 
 export interface ConversationThread {
+  source?: 'discord' | 'reddit'
+  url?: string
   keywordMessage: ThreadMessage
   parentChain: ThreadMessage[]
   replies: ThreadMessage[]
@@ -59,15 +79,18 @@ export interface RegionSummary {
   topPerfumes: string[]
 }
 
-export interface LeaderboardData {
+export interface StatsData {
   meta: {
     keyword: string
     totalMessages: number
     totalThreads: number
     totalPerfumesFound: number
     generatedAt: string
+    sources?: {
+      discord: { totalMessages: number; generatedAt: string }
+      reddit: { totalComments: number; generatedAt: string; yearsRange: string }
+    }
   }
-  leaderboard: PerfumeEntry[]
   regions: Record<string, RegionSummary>
   categories: Record<string, { count: number; perfumes: string[] }>
   topContributors: Array<{
@@ -76,84 +99,212 @@ export interface LeaderboardData {
     messageCount: number
     perfumesMentioned: number
   }>
-  threads: ConversationThread[]
+  maxMentions: number
 }
+
+export interface PaginationInfo {
+  page: number
+  limit: number
+  total: number
+  totalPages: number
+}
+
+export interface PaginatedPerfumesResponse {
+  items: PerfumeEntry[]
+  pagination: PaginationInfo
+}
+
+export type SourceFilter = 'all' | 'discord' | 'reddit'
 
 // ─── Composable ─────────────────────────────────────────────────────
 
 export function usePerfumeData() {
-  const data: Ref<LeaderboardData | null> = useState<LeaderboardData | null>('perfumeData', () => null)
-  const loading = useState('perfumeLoading', () => false)
-  const error = useState<string | null>('perfumeError', () => null)
+  // Stats overview state
+  const stats = useState<StatsData | null>('perfumeStats', () => null)
+  const statsLoading = useState('statsLoading', () => false)
+  const statsError = useState<string | null>('statsError', () => null)
 
-  async function fetchData() {
-    if (data.value) return // Already loaded
+  // Paginated table state
+  const perfumes = useState<PerfumeEntry[]>('paginatedPerfumes', () => [])
+  const pagination = useState<PaginationInfo>('perfumePagination', () => ({
+    page: 1,
+    limit: 25,
+    total: 0,
+    totalPages: 1,
+  }))
+  const tableLoading = useState('tableLoading', () => false)
 
-    loading.value = true
-    error.value = null
+  // Query filter state
+  const searchQuery = useState('perfumeSearchQuery', () => '')
+  const activeRegion = useState('perfumeActiveRegion', () => 'ALL')
+  const localOnly = useState('perfumeLocalOnly', () => false)
+  const activeNotes = useState<string[]>('perfumeActiveNotes', () => [])
+  const activeSource = useState<SourceFilter>('perfumeActiveSource', () => 'all')
+  const sortBy = useState('perfumeSortBy', () => 'mentionCount')
+  const sortAsc = useState('perfumeSortAsc', () => false)
+
+  // Fetch top-level metadata & aggregations (called once)
+  async function fetchStats() {
+    if (stats.value) return // already loaded
+
+    statsLoading.value = true
+    statsError.value = null
 
     try {
-      const response = await $fetch<LeaderboardData>('/data/leaderboard.json')
-      data.value = response
-    } catch (err) {
-      error.value = 'Failed to load leaderboard data'
-      console.error('Error loading perfume data:', err)
+      const res = await $fetch<StatsData>('/api/stats')
+      stats.value = res
+    } catch (err: any) {
+      statsError.value = 'Failed to load catalogue overview statistics'
+      console.error('Error loading stats:', err)
     } finally {
-      loading.value = false
+      statsLoading.value = false
     }
   }
 
-  // ─── Derived data ─────────────────────────────────────────────────
+  // Fetch paginated items with active filters
+  async function fetchPerfumes() {
+    tableLoading.value = true
 
-  const leaderboard = computed(() => data.value?.leaderboard ?? [])
-  const meta = computed(() => data.value?.meta ?? null)
-  const regions = computed(() => data.value?.regions ?? {})
-  const categories = computed(() => data.value?.categories ?? {})
-  const topContributors = computed(() => data.value?.topContributors ?? [])
-  const threads = computed(() => data.value?.threads ?? [])
+    try {
+      const regionParam = localOnly.value
+        ? 'Indonesia'
+        : activeRegion.value !== 'ALL'
+          ? activeRegion.value
+          : ''
 
-  const maxMentions = computed(() => {
-    if (!leaderboard.value.length) return 1
-    return Math.max(...leaderboard.value.map(p => p.mentionCount))
-  })
+      const notesParam = activeNotes.value.length > 0
+        ? activeNotes.value.join(',')
+        : ''
 
-  function getPerfumeBySlug(slug: string): PerfumeEntry | undefined {
-    return leaderboard.value.find(
-      p => slugify(p.name) === slug
-    )
+      const res = await $fetch<PaginatedPerfumesResponse>('/api/perfumes', {
+        params: {
+          page: pagination.value.page,
+          limit: pagination.value.limit,
+          search: searchQuery.value.trim() || undefined,
+          region: regionParam || undefined,
+          notes: notesParam || undefined,
+          source: activeSource.value,
+          sortBy: sortBy.value,
+          sortOrder: sortAsc.value ? 'asc' : 'desc',
+        },
+      })
+
+      perfumes.value = res.items
+      pagination.value = res.pagination
+    } catch (err: any) {
+      console.error('Error querying perfumes:', err)
+    } finally {
+      tableLoading.value = false
+    }
   }
 
-  function getThreadsForPerfume(perfumeName: string): ConversationThread[] {
-    if (!threads.value.length) return []
-
-    const nameLower = perfumeName.toLowerCase()
-    return threads.value.filter(thread => {
-      const allText = [
-        thread.keywordMessage.content,
-        ...thread.parentChain.map(m => m.content),
-        ...thread.replies.map(m => m.content),
-        ...thread.contextBefore.map(m => m.content),
-        ...thread.contextAfter.map(m => m.content),
-      ].join(' ').toLowerCase()
-
-      return allText.includes(nameLower)
-    })
+  // Helper actions
+  function setPage(p: number) {
+    if (p < 1 || p > pagination.value.totalPages) return
+    pagination.value.page = p
+    fetchPerfumes()
   }
+
+  function setLimit(l: number) {
+    pagination.value.limit = l
+    pagination.value.page = 1
+    fetchPerfumes()
+  }
+
+  function setSort(key: string) {
+    if (sortBy.value === key) {
+      sortAsc.value = !sortAsc.value
+    } else {
+      sortBy.value = key
+      sortAsc.value = false
+    }
+    pagination.value.page = 1
+    fetchPerfumes()
+  }
+
+  function setSearch(query: string) {
+    searchQuery.value = query
+    pagination.value.page = 1
+    fetchPerfumes()
+  }
+
+  function setRegion(region: string) {
+    if (region === 'Indonesia') {
+      localOnly.value = true
+      activeRegion.value = 'Indonesia'
+    } else {
+      localOnly.value = false
+      activeRegion.value = region
+    }
+    pagination.value.page = 1
+    fetchPerfumes()
+  }
+
+  function setNotes(notes: string[]) {
+    activeNotes.value = notes
+    pagination.value.page = 1
+    fetchPerfumes()
+  }
+
+  function setSource(source: SourceFilter) {
+    activeSource.value = source
+    pagination.value.page = 1
+    fetchPerfumes()
+  }
+
+  function resetFilters() {
+    searchQuery.value = ''
+    activeRegion.value = 'ALL'
+    localOnly.value = false
+    activeNotes.value = []
+    activeSource.value = 'all'
+    sortBy.value = 'mentionCount'
+    sortAsc.value = false
+    pagination.value.page = 1
+    fetchPerfumes()
+  }
+
+  // Computed properties
+  const meta = computed(() => stats.value?.meta ?? null)
+  const regions = computed(() => stats.value?.regions ?? {})
+  const categories = computed(() => stats.value?.categories ?? {})
+  const topContributors = computed(() => stats.value?.topContributors ?? [])
+  const maxMentions = computed(() => stats.value?.maxMentions ?? 1)
 
   return {
-    data,
-    loading,
-    error,
-    fetchData,
-    leaderboard,
+    // Stats & metadata
+    stats,
     meta,
     regions,
     categories,
     topContributors,
-    threads,
     maxMentions,
-    getPerfumeBySlug,
-    getThreadsForPerfume,
+    loading: statsLoading,
+    error: statsError,
+    fetchData: fetchStats,
+
+    // Paginated list
+    perfumes,
+    pagination,
+    tableLoading,
+    fetchPerfumes,
+
+    // Filter state & setters
+    searchQuery,
+    activeRegion,
+    localOnly,
+    activeNotes,
+    activeSource,
+    sortBy,
+    sortAsc,
+    setPage,
+    setLimit,
+    setSort,
+    setSearch,
+    setRegion,
+    setNotes,
+    setSource,
+    resetFilters,
   }
 }
 
