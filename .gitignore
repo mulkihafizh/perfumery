@@ -5,6 +5,7 @@ node_modules/
 # Nuxt / Nitro output
 .nuxt/
 .output/
+.vercel/
 dist/
 
 # Large raw data files (GitHub 100MB limit)

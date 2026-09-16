@@ -114,41 +114,37 @@ python -m pip install -r requirements.txt
 
 ---
 
+---
+
 ## Deploying to Vercel
 
 The application is fully prepared for Vercel deployment with zero cold-start penalty, utilizing bundled SQLite persistence.
 
-### Step 1: Push Repository to GitHub
-Ensure all code and the generated database (`app/server/data/perfumery.db`) are pushed to your repository.
+### Two Supported Ways to Deploy on Vercel
 
-### Step 2: Import Project into Vercel
-1. Open [Vercel Dashboard](https://vercel.com/new).
-2. Select your `Perfumery` repository.
+You can deploy either directly from the **Repository Root** (default) or by setting the **Root Directory to `app`**. Both work out-of-the-box.
 
-### Step 3: Configure Project Settings (Crucial)
-Configure the following settings in the Vercel deployment form:
-
-- **Framework Preset**: `Nuxt.js`
-- **Root Directory**: Click **Edit** and select **`app`**.
-- **Node.js Version**: Navigate to **Settings** → **General** → **Node.js Version** and select **`22.x`** *(required for `node:sqlite`)*.
-- **Build Command**: `npm run build` (or leave default `nuxt build`).
-- **Output Directory**: `.output` (automatically detected).
+#### Option A: Default Root Deployment (Recommended & Simplest)
+1. Push your repository to GitHub.
+2. Import the `Perfumery` repository in the [Vercel Dashboard](https://vercel.com/new).
+3. Leave **Root Directory** as `./` (default).
+4. Go to **Settings** → **General** → **Node.js Version** and ensure **`22.x`** is selected *(mandatory for Node.js native `node:sqlite`)*.
+5. Click **Deploy**.
 
 > [!NOTE]
-> Setting the Root Directory to `app` isolates the Nuxt 3 web app and avoids uploading local data processing files (`raw-export.json`, `.zst` archives) to Vercel.
+> The root `package.json` and `vercel.json` automatically run `postinstall` to install Nuxt dependencies, build the Nitro server, and mirror `.output` with the bundled `perfumery.db`.
 
-### Step 4: Automated SQLite Packaging
-You do not need to configure external storage. `app/nuxt.config.ts` includes a Nitro compilation hook:
-```typescript
-nitro: {
-  hooks: {
-    compiled(nitro) {
-      // Bundles perfumery.db alongside serverless runtime
-    }
-  }
-}
-```
-During build, Nitro copies `perfumery.db` into the server output. `app/server/utils/db.ts` automatically resolves the database in the Vercel serverless container (`/var/task/data/perfumery.db`) in read-only mode with indexed B-Tree performance.
+#### Option B: Subfolder Deployment (`Root Directory: app`)
+1. In the Vercel project creation / settings modal:
+   - Click **Edit** next to **Root Directory** and choose **`app`**.
+2. Go to **Settings** → **General** → **Node.js Version** and select **`22.x`**.
+3. Click **Deploy**.
+
+### What Was Fixed to Prevent Vercel Build Errors
+- **Production `devDependencies` Stripping**: Moved Nuxt modules (`@nuxtjs/tailwindcss`, `@nuxtjs/google-fonts`, `@nuxt/icon`) into `dependencies` in `app/package.json` so that Vercel's `NODE_ENV=production` build doesn't omit them.
+- **Root Directory Mismatch**: Added root `vercel.json` and output sync in root `package.json` so Vercel finds `.output` whether building from root or `app/`.
+- **Node.js 22 Engine**: Enforced `"engines": { "node": ">=22.5.0" }` for `node:sqlite`.
+- **Automated Database Packaging**: `app/nuxt.config.ts` bundles `app/server/data/perfumery.db` into the serverless function package during the build hook.
 
 ---
 

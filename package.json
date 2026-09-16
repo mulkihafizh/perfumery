@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "postinstall": "npm --prefix app install",
     "dev": "npm --prefix app run dev",
-    "build": "npm --prefix app run build",
+    "build": "npm --prefix app run build && node -e \"const fs=require('fs'); if(fs.existsSync('app/.output') && !fs.existsSync('.output')) fs.cpSync('app/.output', '.output', {recursive:true}); if(fs.existsSync('app/.vercel') && !fs.existsSync('.vercel')) fs.cpSync('app/.vercel', '.vercel', {recursive:true});\"",
     "generate": "npm --prefix app run generate",
     "catalog:generate": "node scripts/generate_catalog.js",
     "catalog:sync:sociolla": "python sync_sociolla_to_catalog.py",
