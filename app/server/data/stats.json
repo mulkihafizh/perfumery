@@ -1,0 +1,1352 @@
+{
+  "meta": {
+    "keyword": "Combined Discord + Reddit",
+    "totalMessages": 344918,
+    "totalThreads": 1849,
+    "totalPerfumesFound": 9003,
+    "generatedAt": "2026-09-15T13:36:19.314Z",
+    "sources": {
+      "discord": {
+        "totalMessages": 83666,
+        "generatedAt": "2026-09-15T13:15:13.016Z"
+      },
+      "reddit": {
+        "totalComments": 261252,
+        "generatedAt": "2026-09-15T13:36:19.314Z",
+        "yearsRange": "2024–2026"
+      }
+    }
+  },
+  "regions": {
+    "France": {
+      "name": "France",
+      "countryCode": "FR",
+      "count": 2794,
+      "totalMentions": 106050,
+      "topPerfumes": [
+        "Dior Sauvage",
+        "Creed Aventus",
+        "Chanel Bleu de Chanel"
+      ]
+    },
+    "Italy": {
+      "name": "Italy",
+      "countryCode": "IT",
+      "count": 1352,
+      "totalMentions": 35071,
+      "topPerfumes": [
+        "Versace Eros",
+        "Giorgio Armani Acqua di Gio",
+        "Gucci Guilty"
+      ]
+    },
+    "United States": {
+      "name": "United States",
+      "countryCode": "US",
+      "count": 1931,
+      "totalMentions": 59748,
+      "topPerfumes": [
+        "Le Labo Another 13",
+        "Glossier You",
+        "Le Labo Santal 33"
+      ]
+    },
+    "United Kingdom": {
+      "name": "United Kingdom",
+      "countryCode": "GB",
+      "count": 816,
+      "totalMentions": 18723,
+      "topPerfumes": [
+        "So In Love",
+        "Burberry Goddess",
+        "The Body Shop Vanilla"
+      ]
+    },
+    "Middle East": {
+      "name": "Middle East",
+      "countryCode": "AE",
+      "count": 573,
+      "totalMentions": 10574,
+      "topPerfumes": [
+        "Lattafa Khamrah",
+        "Arabian Oud Woody",
+        "Arabian Oud Royal Oud"
+      ]
+    },
+    "Germany": {
+      "name": "Germany",
+      "countryCode": "DE",
+      "count": 190,
+      "totalMentions": 3249,
+      "topPerfumes": [
+        "Hugo Boss Boss Bottled",
+        "Mercedes Benz Club",
+        "Mercedes Benz Club Black"
+      ]
+    },
+    "Netherlands": {
+      "name": "Netherlands",
+      "countryCode": "NL",
+      "count": 83,
+      "totalMentions": 3396,
+      "topPerfumes": [
+        "Viktor Rolf Spicebomb",
+        "Hiram Green Vetiver",
+        "Orto Parisi Megamare"
+      ]
+    },
+    "Turkey": {
+      "name": "Turkey",
+      "countryCode": "TR",
+      "count": 59,
+      "totalMentions": 4020,
+      "topPerfumes": [
+        "Nishane Ani",
+        "Nishane Wulong Cha",
+        "Nishane Hacivat"
+      ]
+    },
+    "Oman": {
+      "name": "Oman",
+      "countryCode": "OM",
+      "count": 76,
+      "totalMentions": 4500,
+      "topPerfumes": [
+        "Amouage Guidance",
+        "Amouage Reflection Man",
+        "Amouage Beach Hut Man"
+      ]
+    },
+    "Switzerland": {
+      "name": "Switzerland",
+      "countryCode": "CH",
+      "count": 89,
+      "totalMentions": 1596,
+      "topPerfumes": [
+        "Davidoff Cool Water",
+        "Tauer Perfumes Sundowner",
+        "Victorinox Swiss Army Swiss Army"
+      ]
+    },
+    "Sweden": {
+      "name": "Sweden",
+      "countryCode": "SE",
+      "count": 94,
+      "totalMentions": 3831,
+      "topPerfumes": [
+        "Byredo Mojave Ghost",
+        "Byredo Blanche",
+        "Byredo Gypsy Water"
+      ]
+    },
+    "Indonesia": {
+      "name": "Indonesia",
+      "countryCode": "ID",
+      "count": 56,
+      "totalMentions": 1236,
+      "topPerfumes": [
+        "In The Mood For Love",
+        "SAFF & Co. SAFF",
+        "HMNS Farhampton"
+      ]
+    },
+    "Canada": {
+      "name": "Canada",
+      "countryCode": "CA",
+      "count": 70,
+      "totalMentions": 3960,
+      "topPerfumes": [
+        "Zoologist Perfumes Squid",
+        "Zoologist Perfumes Bee",
+        "Zoologist Perfumes Harvest Mouse"
+      ]
+    },
+    "Spain": {
+      "name": "Spain",
+      "countryCode": "ES",
+      "count": 348,
+      "totalMentions": 4561,
+      "topPerfumes": [
+        "Paco Rabanne 1 Million",
+        "Women Secret Feminine",
+        "Paco Rabanne Pour Homme"
+      ]
+    },
+    "Australia": {
+      "name": "Australia",
+      "countryCode": "AU",
+      "count": 18,
+      "totalMentions": 913,
+      "topPerfumes": [
+        "Aesop Hwyl",
+        "Goldfield Banks Australia Ingenious Ginger",
+        "Aesop Tacit"
+      ]
+    },
+    "Iceland": {
+      "name": "Iceland",
+      "countryCode": "XX",
+      "count": 7,
+      "totalMentions": 232,
+      "topPerfumes": [
+        "Andrea Maack Ceramic",
+        "Andrea Maack Jest",
+        "Andrea Maack Solstice"
+      ]
+    },
+    "Russia": {
+      "name": "Russia",
+      "countryCode": "RU",
+      "count": 53,
+      "totalMentions": 609,
+      "topPerfumes": [
+        "Anna Zworykina Perfumes Cuir de Russie",
+        "Areej Le Dore Cuir de Russie",
+        "Maori Collection Aqua"
+      ]
+    },
+    "Belgium": {
+      "name": "Belgium",
+      "countryCode": "BE",
+      "count": 10,
+      "totalMentions": 345,
+      "topPerfumes": [
+        "Dries Van Noten Soie Malaquais",
+        "Dries Van Noten Fleur du Mal",
+        "Dries Van Noten Santal Greenery"
+      ]
+    },
+    "Hong Kong": {
+      "name": "Hong Kong",
+      "countryCode": "XX",
+      "count": 4,
+      "totalMentions": 385,
+      "topPerfumes": [
+        "One Day Jasmine Tea",
+        "One Day Taipei",
+        "One Day Oolong Tea"
+      ]
+    },
+    "Japan": {
+      "name": "Japan",
+      "countryCode": "JP",
+      "count": 51,
+      "totalMentions": 643,
+      "topPerfumes": [
+        "Shiseido Feminite du Bois",
+        "J Scent Roasted Green Tea",
+        "J Scent Yuzu"
+      ]
+    },
+    "Brazil": {
+      "name": "Brazil",
+      "countryCode": "BR",
+      "count": 114,
+      "totalMentions": 509,
+      "topPerfumes": [
+        "We Pink Red",
+        "Giovanna Baby Cherry",
+        "Giovanna Baby Blue"
+      ]
+    },
+    "Thailand": {
+      "name": "Thailand",
+      "countryCode": "TH",
+      "count": 29,
+      "totalMentions": 267,
+      "topPerfumes": [
+        "Mith Another Tea",
+        "Mith Mystery",
+        "Bortnikoff Lao Oud"
+      ]
+    },
+    "Denmark": {
+      "name": "Denmark",
+      "countryCode": "DK",
+      "count": 17,
+      "totalMentions": 186,
+      "topPerfumes": [
+        "Axe Dark Temptation",
+        "Axe Phoenix",
+        "Axe Africa"
+      ]
+    },
+    "Greece": {
+      "name": "Greece",
+      "countryCode": "GR",
+      "count": 40,
+      "totalMentions": 292,
+      "topPerfumes": [
+        "Theodoros Kalotinis Vanilla",
+        "Korres Kyma",
+        "Korres Avgoustos"
+      ]
+    },
+    "South Korea": {
+      "name": "South Korea",
+      "countryCode": "KR",
+      "count": 18,
+      "totalMentions": 127,
+      "topPerfumes": [
+        "Borntostandout Dirty Rice",
+        "Borntostandout Drunk Maple",
+        "Borntostandout Fig Porn"
+      ]
+    },
+    "Poland": {
+      "name": "Poland",
+      "countryCode": "PL",
+      "count": 47,
+      "totalMentions": 162,
+      "topPerfumes": [
+        "Bohoboco Wet Cherry Liquor",
+        "Bohoboco Magic Mushrooms",
+        "Bohoboco Jasmine White Leather"
+      ]
+    },
+    "Romania": {
+      "name": "Romania",
+      "countryCode": "RO",
+      "count": 7,
+      "totalMentions": 40,
+      "topPerfumes": [
+        "A13 Behind Closed Doors",
+        "Calaj Panther Fangs",
+        "Calaj Delizia Oscura"
+      ]
+    },
+    "Argentina": {
+      "name": "Argentina",
+      "countryCode": "AR",
+      "count": 28,
+      "totalMentions": 93,
+      "topPerfumes": [
+        "La Martina Tierra del Fuego",
+        "Fueguia 1833 Thays",
+        "Fueguia 1833 El Dorado"
+      ]
+    },
+    "Malaysia": {
+      "name": "Malaysia",
+      "countryCode": "MY",
+      "count": 2,
+      "totalMentions": 11,
+      "topPerfumes": [
+        "Auphorie Miyako",
+        "Auphorie Eau de Nyonya"
+      ]
+    },
+    "Hungary": {
+      "name": "Hungary",
+      "countryCode": "HU",
+      "count": 2,
+      "totalMentions": 8,
+      "topPerfumes": [
+        "Superz Flamingo Fizz",
+        "Superz Candy"
+      ]
+    },
+    "Ireland": {
+      "name": "Ireland",
+      "countryCode": "IE",
+      "count": 3,
+      "totalMentions": 9,
+      "topPerfumes": [
+        "Cloon Keen Atelier Sybarite",
+        "Roads Supernova",
+        "Roads Harmattan"
+      ]
+    },
+    "Mexico": {
+      "name": "Mexico",
+      "countryCode": "MX",
+      "count": 2,
+      "totalMentions": 6,
+      "topPerfumes": [
+        "Epico Vani Charnel",
+        "Epico Otello"
+      ]
+    },
+    "India": {
+      "name": "India",
+      "countryCode": "IN",
+      "count": 4,
+      "totalMentions": 11,
+      "topPerfumes": [
+        "Paris Elysees Euro",
+        "Paris Elysees Max",
+        "Paris Elysees Dollar"
+      ]
+    },
+    "Monaco": {
+      "name": "Monaco",
+      "countryCode": "XX",
+      "count": 3,
+      "totalMentions": 8,
+      "topPerfumes": [
+        "Lancaster Sunwater",
+        "Lancaster Eau de Lancaster",
+        "Lancaster Aquazur"
+      ]
+    },
+    "Portugal": {
+      "name": "Portugal",
+      "countryCode": "PT",
+      "count": 8,
+      "totalMentions": 12,
+      "topPerfumes": [
+        "Aqua Dos Acores Atlantic Ocean Flores",
+        "Miguel Matos La Piscine",
+        "Miguel Matos Summer Oud"
+      ]
+    },
+    "Bermuda": {
+      "name": "Bermuda",
+      "countryCode": "XX",
+      "count": 1,
+      "totalMentions": 2,
+      "topPerfumes": [
+        "Lili Bermuda Lily"
+      ]
+    },
+    "Czech Republic": {
+      "name": "Czech Republic",
+      "countryCode": "CZ",
+      "count": 3,
+      "totalMentions": 3,
+      "topPerfumes": [
+        "Renier Perfumes Oud Rain",
+        "Czech Speake Frankincense and Myrrh Cologne",
+        "Renier Perfumes De Licious"
+      ]
+    },
+    "Kazakhstan": {
+      "name": "Kazakhstan",
+      "countryCode": "XX",
+      "count": 1,
+      "totalMentions": 1,
+      "topPerfumes": [
+        "Aura Of Kazakhstan Land of Tulips"
+      ]
+    }
+  },
+  "categories": {
+    "fresh spicy": {
+      "count": 2154,
+      "perfumes": [
+        "Dior Sauvage",
+        "Elizabeth Arden Green Tea",
+        "Guerlain Vetiver",
+        "Clinique Happy",
+        "Parfums de Marly Layton"
+      ]
+    },
+    "amber": {
+      "count": 2107,
+      "perfumes": [
+        "Dior Sauvage",
+        "Chanel Bleu de Chanel",
+        "Le Labo Another 13",
+        "Frédéric Malle Portrait of a Lady",
+        "Maison Martin Margiela By the Fireplace"
+      ]
+    },
+    "citrus": {
+      "count": 3296,
+      "perfumes": [
+        "Dior Sauvage",
+        "Creed Aventus",
+        "Versace Eros",
+        "Chanel Bleu de Chanel",
+        "Dior Miss Dior"
+      ]
+    },
+    "aromatic": {
+      "count": 2959,
+      "perfumes": [
+        "Dior Sauvage",
+        "Chanel Bleu de Chanel",
+        "Le Labo Santal 33",
+        "Elizabeth Arden Green Tea",
+        "Guerlain Vetiver"
+      ]
+    },
+    "musky": {
+      "count": 1475,
+      "perfumes": [
+        "Dior Sauvage",
+        "Creed Aventus",
+        "Versace Eros",
+        "Le Labo Another 13",
+        "Ariana Grande Cloud"
+      ]
+    },
+    "fruity": {
+      "count": 2342,
+      "perfumes": [
+        "Creed Aventus",
+        "Le Labo Another 13",
+        "So In Love",
+        "Tom Ford Tobacco Vanille",
+        "The Body Shop Vanilla"
+      ]
+    },
+    "woody": {
+      "count": 4739,
+      "perfumes": [
+        "Creed Aventus",
+        "Versace Eros",
+        "Chanel Bleu de Chanel",
+        "Le Labo Another 13",
+        "Le Labo Santal 33"
+      ]
+    },
+    "powdery": {
+      "count": 2417,
+      "perfumes": [
+        "Creed Aventus",
+        "Glossier You",
+        "Le Labo Santal 33",
+        "The Body Shop Vanilla",
+        "Dior Homme Intense"
+      ]
+    },
+    "white floral": {
+      "count": 2007,
+      "perfumes": [
+        "Versace Eros",
+        "So In Love",
+        "Giorgio Armani Acqua di Gio",
+        "Dior Miss Dior",
+        "The Body Shop Vanilla"
+      ]
+    },
+    "floral": {
+      "count": 2131,
+      "perfumes": [
+        "Versace Eros",
+        "Giorgio Armani Acqua di Gio",
+        "Parfums de Marly Delina",
+        "Clinique Happy",
+        "Chanel Allure"
+      ]
+    },
+    "warm spicy": {
+      "count": 2440,
+      "perfumes": [
+        "Chanel Bleu de Chanel",
+        "Tom Ford Tobacco Vanille",
+        "Frédéric Malle Portrait of a Lady",
+        "Burberry Goddess",
+        "Yves Saint Laurent Black Opium"
+      ]
+    },
+    "animalic": {
+      "count": 318,
+      "perfumes": [
+        "Le Labo Another 13",
+        "Detaille Fleur de Peau",
+        "Dior Fahrenheit",
+        "Arabian Oud Royal Oud",
+        "Tom Ford Ombre Leather"
+      ]
+    },
+    "musk": {
+      "count": 1,
+      "perfumes": [
+        "Glossier You"
+      ]
+    },
+    "fresh": {
+      "count": 1046,
+      "perfumes": [
+        "Glossier You",
+        "Giorgio Armani Acqua di Gio",
+        "Parfums de Marly Delina",
+        "Elizabeth Arden Green Tea",
+        "Victoria's Secret Victoria"
+      ]
+    },
+    "spicy": {
+      "count": 12,
+      "perfumes": [
+        "Glossier You",
+        "Le Labo Santal 33",
+        "Maison Margiela By the Fireplace",
+        "Maison Margiela Jazz Club",
+        "Kilian Angels' Share"
+      ]
+    },
+    "leather": {
+      "count": 580,
+      "perfumes": [
+        "Le Labo Santal 33",
+        "Dior Fahrenheit",
+        "Dior Homme Parfum",
+        "Bentley For Men",
+        "Tom Ford Ombre Leather"
+      ]
+    },
+    "sweet": {
+      "count": 2707,
+      "perfumes": [
+        "So In Love",
+        "Tom Ford Tobacco Vanille",
+        "The Body Shop Vanilla",
+        "Ariana Grande Cloud",
+        "Yves Saint Laurent Black Opium"
+      ]
+    },
+    "green": {
+      "count": 1222,
+      "perfumes": [
+        "So In Love",
+        "Giorgio Armani Acqua di Gio",
+        "Elizabeth Arden Green Tea",
+        "Nautica Voyage",
+        "Prada Luna Rossa"
+      ]
+    },
+    "vanilla": {
+      "count": 1795,
+      "perfumes": [
+        "Tom Ford Tobacco Vanille",
+        "Burberry Goddess",
+        "The Body Shop Vanilla",
+        "Ariana Grande Cloud",
+        "Yves Saint Laurent Black Opium"
+      ]
+    },
+    "tobacco": {
+      "count": 195,
+      "perfumes": [
+        "Tom Ford Tobacco Vanille",
+        "Maison Margiela Jazz Club",
+        "Maison Martin Margiela Jazz Club",
+        "Viktor Rolf Spicebomb",
+        "Chanel Egoiste"
+      ]
+    },
+    "rose": {
+      "count": 1110,
+      "perfumes": [
+        "Giorgio Armani Acqua di Gio",
+        "Frédéric Malle Portrait of a Lady",
+        "Dior Miss Dior",
+        "Parfums de Marly Delina",
+        "Victoria's Secret Victoria"
+      ]
+    },
+    "patchouli": {
+      "count": 425,
+      "perfumes": [
+        "Frédéric Malle Portrait of a Lady",
+        "Dior Miss Dior",
+        "Mugler Angel",
+        "Arabian Oud Woody",
+        "Chanel Coco Mademoiselle"
+      ]
+    },
+    "lavender": {
+      "count": 363,
+      "perfumes": [
+        "Burberry Goddess",
+        "Gucci Guilty",
+        "Guerlain Mon Guerlain",
+        "Prada Luna Rossa",
+        "Yves Saint Laurent La Nuit de L"
+      ]
+    },
+    "cacao": {
+      "count": 89,
+      "perfumes": [
+        "Burberry Goddess",
+        "Carolina Herrera Good Girl",
+        "Dries Van Noten Soie Malaquais",
+        "Roja Dove Amber",
+        "Lattafa Nebras"
+      ]
+    },
+    "lactonic": {
+      "count": 176,
+      "perfumes": [
+        "Ariana Grande Cloud",
+        "Commodity Milk",
+        "Creed Virgin Island Water",
+        "Versace Crystal Noir",
+        "Jovoy Paris Remember Me"
+      ]
+    },
+    "coconut": {
+      "count": 171,
+      "perfumes": [
+        "Ariana Grande Cloud",
+        "Ds Durga Debaser",
+        "Creed Virgin Island Water",
+        "Tom Ford Soleil Blanc",
+        "Versace Crystal Noir"
+      ]
+    },
+    "tuberose": {
+      "count": 255,
+      "perfumes": [
+        "Detaille Fleur de Peau",
+        "Gucci Bloom",
+        "Tom Ford Soleil Blanc",
+        "Britney Spears Curious",
+        "Nishane Hundred Silent Ways"
+      ]
+    },
+    "coffee": {
+      "count": 89,
+      "perfumes": [
+        "Yves Saint Laurent Black Opium",
+        "By Kilian Black Phantom",
+        "Lattafa Khamrah Qahwa",
+        "Mancera Amore Caffe",
+        "By Kilian Intoxicated"
+      ]
+    },
+    "earthy": {
+      "count": 525,
+      "perfumes": [
+        "Guerlain Vetiver",
+        "Dior Homme Intense",
+        "Tom Ford Black Orchid",
+        "Lalique Encre Noire",
+        "Nishane Hacivat"
+      ]
+    },
+    "caramel": {
+      "count": 172,
+      "perfumes": [
+        "Victoria's Secret Victoria",
+        "Mugler Angel",
+        "Juicy Couture Viva la Juicy",
+        "Prada Candy",
+        "By Kilian Black Phantom"
+      ]
+    },
+    "smoky": {
+      "count": 228,
+      "perfumes": [
+        "Maison Margiela By the Fireplace",
+        "Gucci Pour Homme",
+        "Amouage Interlude Man",
+        "Arquiste Indigo Smoke",
+        "Anna Zworykina Perfumes Cuir de Russie"
+      ]
+    },
+    "balsamic": {
+      "count": 335,
+      "perfumes": [
+        "Maison Martin Margiela By the Fireplace",
+        "Van Cleef Arpels Van Cleef",
+        "Zoologist Perfumes Squid",
+        "Guerlain Spiritueuse Double Vanille",
+        "Mercedes Benz Club Black"
+      ]
+    },
+    "iris": {
+      "count": 349,
+      "perfumes": [
+        "Dior Homme Intense",
+        "Creed Green Irish Tweed",
+        "Givenchy Gentleman",
+        "Dior Homme Parfum",
+        "Prada Infusion D"
+      ]
+    },
+    "violet": {
+      "count": 245,
+      "perfumes": [
+        "Dior Homme Intense",
+        "Byredo Mojave Ghost",
+        "Marc Jacobs Daisy",
+        "Dior Homme Parfum",
+        "Tom Ford Noir"
+      ]
+    },
+    "cinnamon": {
+      "count": 177,
+      "perfumes": [
+        "Lattafa Khamrah",
+        "Hugo Boss Boss Bottled",
+        "Viktor Rolf Spicebomb",
+        "Chanel Egoiste",
+        "By Kilian Angels Share"
+      ]
+    },
+    "rum": {
+      "count": 50,
+      "perfumes": [
+        "Maison Martin Margiela Jazz Club",
+        "Bentley For Men",
+        "Bentley For Men Intense",
+        "Nishane Fan Your Flames",
+        "Bvlgari Man in Black"
+      ]
+    },
+    "gourmand": {
+      "count": 3,
+      "perfumes": [
+        "Kilian Angels' Share",
+        "One Day Taipei",
+        "Bath & Body Works Vacation Vibe"
+      ]
+    },
+    "ozonic": {
+      "count": 233,
+      "perfumes": [
+        "Dior Fahrenheit",
+        "Creed Green Irish Tweed",
+        "Davidoff Cool Water",
+        "Marc Jacobs Daisy",
+        "Bvlgari Man"
+      ]
+    },
+    "cherry": {
+      "count": 90,
+      "perfumes": [
+        "Tom Ford Lost Cherry",
+        "Dior Miss Dior Cherie",
+        "Mind Games French Defense",
+        "Initio Parfums Privés Narcotic Delight",
+        "Britney Spears Midnight Fantasy"
+      ]
+    },
+    "almond": {
+      "count": 173,
+      "perfumes": [
+        "Tom Ford Lost Cherry",
+        "Givenchy Pi",
+        "Dior Hypnotic Poison",
+        "Marc Jacobs Perfect",
+        "Xerjoff Starlight"
+      ]
+    },
+    "nutty": {
+      "count": 107,
+      "perfumes": [
+        "Tom Ford Lost Cherry",
+        "Valentino Uomo",
+        "Dior Hypnotic Poison",
+        "Xerjoff Italica",
+        "Dries Van Noten Soie Malaquais"
+      ]
+    },
+    "warm": {
+      "count": 1,
+      "perfumes": [
+        "Maison Francis Kurkdjian Grand Soir"
+      ]
+    },
+    "honey": {
+      "count": 154,
+      "perfumes": [
+        "Giorgio Armani Armani Code",
+        "Guerlain Tobacco Honey",
+        "Jean Paul Gaultier Le Male Elixir",
+        "Zoologist Perfumes Bee",
+        "Zadig & Voltaire This Is Really"
+      ]
+    },
+    "soft spicy": {
+      "count": 271,
+      "perfumes": [
+        "Viktor Rolf Spicebomb",
+        "Valentino Donna Born in Roma",
+        "Creed Viking",
+        "Moschino Toy Boy",
+        "Dior Ambre Nuit"
+      ]
+    },
+    "oud": {
+      "count": 433,
+      "perfumes": [
+        "Arabian Oud Woody",
+        "Frédéric Malle The Moon",
+        "Afnan Supremacy in Oud",
+        "Armaf Club de Nuit Intense",
+        "Initio Parfums Privés Oud for Greatness"
+      ]
+    },
+    "mossy": {
+      "count": 186,
+      "perfumes": [
+        "Nishane Hacivat",
+        "Amouage Beach Hut Man",
+        "Chanel Antaeus",
+        "Chloe Nomade",
+        "Acqua di Parma Profumo"
+      ]
+    },
+    "aquatic": {
+      "count": 329,
+      "perfumes": [
+        "Davidoff Cool Water",
+        "Gap Grass",
+        "Britney Spears Curious",
+        "Bvlgari Man",
+        "Orto Parisi Megamare"
+      ]
+    },
+    "tropical": {
+      "count": 261,
+      "perfumes": [
+        "Britney Spears Fantasy",
+        "Lattafa Yara",
+        "Carolina Herrera Very Good Girl",
+        "Zoologist Perfumes Bat",
+        "Mind Games Blockade"
+      ]
+    },
+    "chocolate": {
+      "count": 43,
+      "perfumes": [
+        "Britney Spears Fantasy",
+        "Valentino Uomo",
+        "By Kilian Black Phantom",
+        "Vera Wang Princess",
+        "Nasomatto Pardon"
+      ]
+    },
+    "aldehydic": {
+      "count": 132,
+      "perfumes": [
+        "Chanel Allure Homme Sport",
+        "Byredo Blanche",
+        "Clean Air",
+        "Maison Martin Margiela Lazy Sunday Morning",
+        "Parfums de Marly Valaya"
+      ]
+    },
+    "marine": {
+      "count": 216,
+      "perfumes": [
+        "Chanel Allure Homme Sport",
+        "Abercrombie & Fitch Fierce",
+        "Elizabeth Arden White Tea",
+        "Orto Parisi Megamare",
+        "Clean Warm Cotton"
+      ]
+    },
+    "salty": {
+      "count": 94,
+      "perfumes": [
+        "Zoologist Perfumes Squid",
+        "Creed Millesime Imperial",
+        "James Heeley Sel Marin",
+        "Arquiste Sydney Rock Pool",
+        "Juliette Has a Gun Vanilla Vibes"
+      ]
+    },
+    "yellow floral": {
+      "count": 293,
+      "perfumes": [
+        "Jovoy Paris Fire At Will",
+        "Estee Lauder Beautiful",
+        "Creed Millesime",
+        "Jean Patou Joy",
+        "Guerlain Too Much"
+      ]
+    },
+    "herbal": {
+      "count": 200,
+      "perfumes": [
+        "Ralph Lauren Romance",
+        "Zoologist Perfumes Harvest Mouse",
+        "Byredo De Los Santos",
+        "Calvin Klein Euphoria",
+        "Xerjoff Torino21"
+      ]
+    },
+    "beeswax": {
+      "count": 16,
+      "perfumes": [
+        "Zoologist Perfumes Bee",
+        "Jo Malone Red Roses",
+        "Hiram Green Slowdive",
+        "Prada La",
+        "Van Cleef Arpels California Reverie"
+      ]
+    },
+    "metallic": {
+      "count": 36,
+      "perfumes": [
+        "Prada Luna Rossa Carbon",
+        "Penhaligon's Sartorial",
+        "Louis Vuitton Myriad",
+        "Armaf Club de Nuit Untold",
+        "Nishane Safran Colognise"
+      ]
+    },
+    "clean": {
+      "count": 4,
+      "perfumes": [
+        "Maison Margiela Lazy Sunday Morning",
+        "Alchemist Powder Room",
+        "Alchemist Pink Laundry",
+        "Mykonos Baby Love"
+      ]
+    },
+    "mineral": {
+      "count": 36,
+      "perfumes": [
+        "Valentino Uomo Born in Roma",
+        "Arquiste Sydney Rock Pool",
+        "Amouage Beach Hut Woman",
+        "Dior Eden Roc",
+        "Skylar Salt Air"
+      ]
+    },
+    "whiskey": {
+      "count": 30,
+      "perfumes": [
+        "Tom Ford Tobacco Oud",
+        "Halloween Man X",
+        "Beaufort London Vi et Armis",
+        "Jovoy Paris Pavillon Rouge",
+        "Jorum Studio Spiritcask"
+      ]
+    },
+    "soapy": {
+      "count": 9,
+      "perfumes": [
+        "Maison Martin Margiela Bubble Bath",
+        "Dior New Look",
+        "Lush Big",
+        "Etat Libre d'Orange Exit the King",
+        "Floraiku Sleeping on the Roof"
+      ]
+    },
+    "cannabis": {
+      "count": 21,
+      "perfumes": [
+        "Nasomatto Black Afgano",
+        "Balenciaga Florabotanica",
+        "Mancera Hindu Kush",
+        "Dries Van Noten Voodoo Chile",
+        "Byredo Open Sky"
+      ]
+    },
+    "coca-cola": {
+      "count": 10,
+      "perfumes": [
+        "Mancera Tonka Cola",
+        "Escada Collection",
+        "By Kilian Born to Be Unforgettable",
+        "Jacques Zolty Severo",
+        "By Kilian Bad Boys Are No Good But Good Boys Are No Fun"
+      ]
+    },
+    "savory": {
+      "count": 12,
+      "perfumes": [
+        "Teo Cabanel Je Ne Sais Quoi",
+        "Borntostandout Dirty Rice",
+        "Electimuss Black Caviar",
+        "L'Artisan Parfumeur Le Chant de Camargue",
+        "Zara A Mochi Atelier in Tokyo"
+      ]
+    },
+    "anis": {
+      "count": 57,
+      "perfumes": [
+        "Guerlain La Petite Robe Noire",
+        "Lolita Lempicka Original",
+        "Ghost Man",
+        "Lolita Lempicka Le Parfum",
+        "Lush Rentless"
+      ]
+    },
+    "terpenic": {
+      "count": 1,
+      "perfumes": [
+        "Vilhelm Parfumerie Mango Skin"
+      ]
+    },
+    "conifer": {
+      "count": 18,
+      "perfumes": [
+        "Heretic Parfums Dirty Hinoki",
+        "Bottega Veneta Pour Homme",
+        "Hugo Boss Hugo Man",
+        "Rook Perfumes Forest",
+        "Mad Et Len Humus"
+      ]
+    },
+    "camphor": {
+      "count": 22,
+      "perfumes": [
+        "Creed Royal Mayfair",
+        "Zoologist Perfumes Koala",
+        "Akro Haze",
+        "Ds Durga Notorious Oud",
+        "Zara Vapeur Blanche"
+      ]
+    },
+    "champagne": {
+      "count": 17,
+      "perfumes": [
+        "Atelier Des Ors Pink Me Up",
+        "Paris Hilton Heiress",
+        "Vilhelm Parfumerie Sparkling Jo",
+        "Les Liquides Imaginaires Dom Rosa",
+        "Etat Libre d'Orange Remarkable People"
+      ]
+    },
+    "oriental": {
+      "count": 5,
+      "perfumes": [
+        "Jean Paul Gaultier Summer",
+        "Dior Santal Noir",
+        "Mykonos Aphrodite",
+        "Giorgio Armani Armani Code Elixir",
+        "Mykonos Bonfire Vanilla"
+      ]
+    },
+    "alcohol": {
+      "count": 6,
+      "perfumes": [
+        "Azzaro The Most Wanted Intense",
+        "Bohoboco Wet Cherry Liquor",
+        "Lancome Parfait de Roses",
+        "Valentino Donna Noir Absolu",
+        "Escada Flor del Sol"
+      ]
+    },
+    "wine": {
+      "count": 8,
+      "perfumes": [
+        "Les Liquides Imaginaires Bloody Wood",
+        "Maori Collection Air",
+        "Bohoboco Red Wine Brown Sugar",
+        "Les Liquides Imaginaires Bello Rabelo",
+        "Mercedes Benz Sign Your Power"
+      ]
+    },
+    "vodka": {
+      "count": 8,
+      "perfumes": [
+        "Parfum D Empire Ambre Russe",
+        "Stephane Humbert Lucas 777 Pink Boa",
+        "Escada Moon Sparkle",
+        "Ralph Lauren Romance Silver",
+        "By Kilian Blue Moon Ginger Dash"
+      ]
+    },
+    "sour": {
+      "count": 4,
+      "perfumes": [
+        "Hermes Eau de Rhubarbe Ecarlate",
+        "Nest Indian Jasmine Perfume Oil",
+        "Vera Wang Be Jeweled",
+        "Eau D Italie Graine de Joie"
+      ]
+    },
+    "plastic": {
+      "count": 2,
+      "perfumes": [
+        "Arquiste Vacation",
+        "Wild Drops Parfums Garage"
+      ]
+    },
+    "industrial glue": {
+      "count": 1,
+      "perfumes": [
+        "Comme des Garçons 2011"
+      ]
+    },
+    "brown scotch tape": {
+      "count": 1,
+      "perfumes": [
+        "Comme des Garçons 2011"
+      ]
+    },
+    "sand": {
+      "count": 11,
+      "perfumes": [
+        "Ds Durga El Cosmico",
+        "Laboratorio Olfattivo Salina",
+        "Korres Aegean Bronze",
+        "Sol De Janeiro Do Not Disturb",
+        "Moschino Toy 2 Pearl"
+      ]
+    },
+    "vinyl": {
+      "count": 3,
+      "perfumes": [
+        "Costume National Cyber Garden",
+        "Playboy New York",
+        "Estee Lauder Modern Muse le Rouge Gloss"
+      ]
+    },
+    "rubber": {
+      "count": 1,
+      "perfumes": [
+        "Rook Perfumes School"
+      ]
+    },
+    "paper": {
+      "count": 1,
+      "perfumes": [
+        "Rook Perfumes School"
+      ]
+    },
+    "hot iron": {
+      "count": 2,
+      "perfumes": [
+        "Ds Durga Bitter Rose Broken Spear",
+        "Wild Drops Parfums Garage"
+      ]
+    },
+    "clay": {
+      "count": 1,
+      "perfumes": [
+        "Philosophy Pure Grace Desert Summer"
+      ]
+    },
+    "gasoline": {
+      "count": 1,
+      "perfumes": [
+        "Wild Drops Parfums Garage"
+      ]
+    },
+    "bitter": {
+      "count": 1,
+      "perfumes": [
+        "Anka Kus Parfuem Absinthe Minded"
+      ]
+    },
+    "creamy": {
+      "count": 1,
+      "perfumes": [
+        "Bath & Body Works Vacation Vibe"
+      ]
+    }
+  },
+  "topContributors": [
+    {
+      "name": "Samt",
+      "username": "samtinghepen",
+      "messageCount": 12105,
+      "perfumesMentioned": 103
+    },
+    {
+      "name": "Mr. Least",
+      "username": "2357kev",
+      "messageCount": 6763,
+      "perfumesMentioned": 116
+    },
+    {
+      "name": "MytHz",
+      "username": "m_hamzah8",
+      "messageCount": 5624,
+      "perfumesMentioned": 93
+    },
+    {
+      "name": "n",
+      "username": "leinaddd",
+      "messageCount": 3639,
+      "perfumesMentioned": 42
+    },
+    {
+      "name": "veza",
+      "username": "professionalunemploy",
+      "messageCount": 3246,
+      "perfumesMentioned": 57
+    },
+    {
+      "name": "Epstein Greyrat",
+      "username": "coming1nh0t",
+      "messageCount": 3241,
+      "perfumesMentioned": 25
+    },
+    {
+      "name": "An",
+      "username": "sleepingdart",
+      "messageCount": 3059,
+      "perfumesMentioned": 65
+    },
+    {
+      "name": "Jeno (Tobiichi)",
+      "username": "jennoooooo",
+      "messageCount": 2631,
+      "perfumesMentioned": 40
+    },
+    {
+      "name": "rayquajal",
+      "username": "almostoiii",
+      "messageCount": 1542,
+      "perfumesMentioned": 18
+    },
+    {
+      "name": "ricky🦉",
+      "username": "rickyfaa",
+      "messageCount": 1522,
+      "perfumesMentioned": 34
+    },
+    {
+      "name": "pebra pake_f",
+      "username": "pebrapake_f2760",
+      "messageCount": 1520,
+      "perfumesMentioned": 10
+    },
+    {
+      "name": "Hann Solo",
+      "username": "hann2327",
+      "messageCount": 1464,
+      "perfumesMentioned": 19
+    },
+    {
+      "name": "Rzx",
+      "username": "rezadpr",
+      "messageCount": 1392,
+      "perfumesMentioned": 38
+    },
+    {
+      "name": "unknown-user1337",
+      "username": "hahahahalolxdddd",
+      "messageCount": 1245,
+      "perfumesMentioned": 17
+    },
+    {
+      "name": "miw",
+      "username": "varemreisz",
+      "messageCount": 1183,
+      "perfumesMentioned": 18
+    },
+    {
+      "name": "Sind3ntosca",
+      "username": "sind3ntosca.",
+      "messageCount": 1175,
+      "perfumesMentioned": 12
+    },
+    {
+      "name": "Issey",
+      "username": "isseymiyakee",
+      "messageCount": 1020,
+      "perfumesMentioned": 31
+    },
+    {
+      "name": "Testarossa",
+      "username": "luminoirs",
+      "messageCount": 1016,
+      "perfumesMentioned": 19
+    },
+    {
+      "name": "al",
+      "username": "rayrifs",
+      "messageCount": 1014,
+      "perfumesMentioned": 26
+    },
+    {
+      "name": "OdiAdam",
+      "username": "odiadam",
+      "messageCount": 936,
+      "perfumesMentioned": 20
+    }
+  ],
+  "totalPerfumes": 9003
+}

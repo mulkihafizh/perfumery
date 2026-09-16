@@ -42,21 +42,26 @@ export default defineNuxtConfig({
   hooks: {
     'nitro:init'(nitro) {
       nitro.hooks.hook('compiled', (nitro) => {
-        // Ensure perfumery.db is bundled alongside the server runtime for Vercel / serverless deployments
-        const possibleDbSources = [
-          path.resolve(nitro.options.srcDir, 'server/data/perfumery.db'),
-          path.resolve(nitro.options.rootDir, 'server/data/perfumery.db'),
-          path.resolve(nitro.options.rootDir, 'app/server/data/perfumery.db'),
+        // Ensure server data files are bundled alongside the server runtime for Vercel / serverless deployments
+        const dataDirs = [
+          path.resolve(nitro.options.srcDir, 'server/data'),
+          path.resolve(nitro.options.rootDir, 'server/data'),
+          path.resolve(nitro.options.rootDir, 'app/server/data'),
         ]
-        const srcDb = possibleDbSources.find(p => fs.existsSync(p))
-        if (srcDb && nitro.options.output?.serverDir) {
+        const srcDataDir = dataDirs.find(d => fs.existsSync(d))
+        if (srcDataDir && nitro.options.output?.serverDir) {
           const destDir = path.resolve(nitro.options.output.serverDir, 'data')
           if (!fs.existsSync(destDir)) {
             fs.mkdirSync(destDir, { recursive: true })
           }
-          const destDb = path.resolve(destDir, 'perfumery.db')
-          fs.copyFileSync(srcDb, destDb)
-          console.log(`[nitro] ✓ Bundled SQLite database to ${destDb}`)
+          for (const file of fs.readdirSync(srcDataDir)) {
+            const srcFile = path.resolve(srcDataDir, file)
+            const destFile = path.resolve(destDir, file)
+            if (fs.statSync(srcFile).isFile()) {
+              fs.copyFileSync(srcFile, destFile)
+              console.log(`[nitro] ✓ Bundled ${file} to ${destFile}`)
+            }
+          }
         }
       })
     },
