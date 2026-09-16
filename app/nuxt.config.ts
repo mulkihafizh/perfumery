@@ -39,9 +39,9 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  nitro: {
-    hooks: {
-      compiled(nitro) {
+  hooks: {
+    'nitro:init'(nitro) {
+      nitro.hooks.hook('compiled', (nitro) => {
         // Ensure perfumery.db is bundled alongside the server runtime for Vercel / serverless deployments
         const possibleDbSources = [
           path.resolve(nitro.options.srcDir, 'server/data/perfumery.db'),
@@ -58,7 +58,7 @@ export default defineNuxtConfig({
           fs.copyFileSync(srcDb, destDb)
           console.log(`[nitro] ✓ Bundled SQLite database to ${destDb}`)
         }
-      },
+      })
     },
   },
 })

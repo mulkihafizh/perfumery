@@ -141,8 +141,10 @@ You can deploy either directly from the **Repository Root** (default) or by sett
 3. Click **Deploy**.
 
 ### What Was Fixed to Prevent Vercel Build Errors
-- **Production `devDependencies` Stripping**: Moved Nuxt modules (`@nuxtjs/tailwindcss`, `@nuxtjs/google-fonts`, `@nuxt/icon`) into `dependencies` in `app/package.json` so that Vercel's `NODE_ENV=production` build doesn't omit them.
-- **Root Directory Mismatch**: Added root `vercel.json` and output sync in root `package.json` so Vercel finds `.output` whether building from root or `app/`.
+- **Nuxt 2 Legacy Preset Removal (`dist` error)**: Removed legacy `"framework": "nuxtjs"` from `vercel.json` (which instructed Vercel to expect a Nuxt 2 `dist/` directory) and configured explicit `"outputDirectory": ".vercel/output"`.
+- **Nitro Preset Hook Preservation**: Changed SQLite bundling in [app/nuxt.config.ts](file:///d:/Code/Javascript/Perfumery/app/nuxt.config.ts) from `nitro.hooks.compiled` to `hooks: { 'nitro:init'(nitro) { nitro.hooks.hook('compiled', ...) } }`. This prevents overwriting Nitro's built-in Vercel compilation hook, guaranteeing that `.vercel/output/config.json` and `.vc-config.json` are generated.
+- **Build Output Synchronization**: Added [scripts/sync-vercel-build.js](file:///d:/Code/Javascript/Perfumery/scripts/sync-vercel-build.js) invoked by `npm run build` to cleanly mirror `app/.vercel/output` and `app/.output` to the project root for root deployments.
+- **Production `devDependencies` Stripping**: Moved Nuxt modules (`@nuxtjs/tailwindcss`, `@nuxtjs/google-fonts`, `@nuxt/icon`) into `dependencies` in [app/package.json](file:///d:/Code/Javascript/Perfumery/app/package.json) so that Vercel's `NODE_ENV=production` build doesn't omit them.
 - **Node.js 22 Engine**: Enforced `"engines": { "node": ">=22.5.0" }` for `node:sqlite`.
 - **Automated Database Packaging**: `app/nuxt.config.ts` bundles `app/server/data/perfumery.db` into the serverless function package during the build hook.
 
